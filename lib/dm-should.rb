@@ -56,7 +56,7 @@ module DataMapper::Should
     end
 
     def read_attribute(resource)
-      property.get!(resource)
+      property.get(resource)
     end
 
   end
