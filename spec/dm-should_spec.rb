@@ -12,6 +12,21 @@ class Item
 
 end
 
+class Item2
+  include DataMapper::Resource 
+
+  property :id, Serial
+  property_with_spec :name, String do
+    should be_present
+  end
+  property_with_spec :price, Integer do
+    should be_present
+  end
+
+  ensure_spec
+
+end
+
 describe "DataMapper::Resource with dm-should" do
 
   subject do
@@ -31,7 +46,10 @@ describe "DataMapper::Resource with dm-should" do
   it "should have specs as a class attribute" do
     Item.specs.should be_a(DataMapper::Should::SpecCollection)
     Item.specs.to_ary.should have(1).item
-    Item.specs.to_ary.first.should be_a(DataMapper::Should::BePresent)
+    Item.specs[0].should be_a(DataMapper::Should::BePresent)
+
+    Item2.specs.to_ary.should have(2).items
+    Item2.specs[1].should be_a(DataMapper::Should::BePresent)
   end
 
 

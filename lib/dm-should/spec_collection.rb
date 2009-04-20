@@ -16,6 +16,10 @@ module DataMapper
         specs.flatten!
       end
       alias_method :<<, :add
+
+      def [](key)
+        specs[key]
+      end
       
       def to_ary
         specs.dup

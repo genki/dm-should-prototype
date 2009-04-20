@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-class Item2
+class ItemWithoutSpec
   include DataMapper::Resource
   property :name, String
 end
@@ -18,7 +18,7 @@ describe DataMapper::Should::SpecCollector do
     # classes should have a reference to a proeprty class.
     # So, it isnt passed for modifying something. In other words, 
     # Neither a model or a SpecCollection is supposed to be changed by this method.  
-    collected = DataMapper::Should::SpecCollector.collect(Item2.properties[:name], spec_proc)
+    collected = DataMapper::Should::SpecCollector.collect(ItemWithoutSpec.properties[:name], spec_proc)
     collected.should be_an(Array)
     collected.should have(1).member
     collected[0].should be_a(DataMapper::Should::BePresent)
