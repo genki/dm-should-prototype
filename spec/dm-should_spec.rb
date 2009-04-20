@@ -8,8 +8,6 @@ class Item
     should be_present
   end
 
-  ensure_spec
-
 end
 
 class Item2
@@ -22,8 +20,6 @@ class Item2
   property_with_spec :price, Integer do
     should be_present
   end
-
-  ensure_spec
 
 end
 
@@ -38,8 +34,13 @@ describe "DataMapper::Resource with dm-should" do
   end
 
 
-  it "should respond_to :ensure_specs" do
+  it "should respond_to #ensure_specs" do
     should respond_to(:ensure_specs)
+  end
+
+  it "#ensure_specs should executed when #valid?" do
+    @record.should_receive(:ensure_specs)
+    @record.valid?
   end
 
 

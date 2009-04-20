@@ -29,18 +29,6 @@ module DataMapper
         @specs.each &block
       end
 
-      def compiled_statement
-        code =   "def ensure_specs\n"
-        ensure_statements.each do |statement|
-          code << statement
-        end
-        code <<  "end"
-      end
-
-      def ensure_statements
-        []
-      end
-
     end
   end
 end
