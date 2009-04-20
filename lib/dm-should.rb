@@ -8,33 +8,31 @@ dir = Pathname(__FILE__).dirname.expand_path / 'dm-should'
 module DataMapper
   module Model
     
-    attr_reader :specs
-    
-
     def property_with_spec(*args, &block)
       pro = property(*args)
-      collect_specs(pro, block)
-      define_ensure_specs_method(pro)
+      specs << Should::SpecCollector.collect(pro, block)
     end
 
 
-    def collect_specs(pro, spec_proc)
-      @specs = Should::SpecCollection.new(pro)
-      @specs.collect spec_proc
+    # define the :ensure_spec instance method
+    def ensure_spec
+      self.module_eval(specs.compiled_statement, __FILE__, __LINE__) 
     end
 
-    def define_ensure_specs_method(pro)
-      code =   "def ensure_specs\n"
-      code <<  "end"
-      pro.model.module_eval(code, __FILE__, __LINE__) 
+
+    # A Model class has A SpecCollection.
+    def specs
+      @specs = Should::SpecCollection.new(self) unless @specs
+      @specs
     end
 
   end
-end
 
-module DataMapper
+
+  class Property
+  end
+
   module Resource
-
 
     def valid?
       errors.empty?
@@ -46,62 +44,12 @@ module DataMapper
       @errors
     end
 
-
   end
 end
-
 require dir / "version"
-
-# how are specs collected ?
-module DataMapper::Should
-
-  class SpecCollection
-
-    attr_reader :specs, :property
-
-    def initialize(property)
-      @property = property
-      @specs = []
-    end
-    
-    def collect(spec_proc)
-      SpecCollector.collect(self, spec_proc)
-      specs
-    end
-
-    def inspect
-      specs.inspect
-    end
-
-    def to_ary
-      specs.dup
-    end
-
-
-    class SpecCollector
-
-      def self.collect(collection, spec_proc)
-        obj = self.new(collection)
-        obj.instance_eval &spec_proc if spec_proc.is_a? Proc
-      end
-
-      def initialize(collection)
-        @collection = collection
-        @specs = []
-      end
-
-      def should(spec)
-        spec.property = @collection.property
-        @collection.specs << spec
-      end
-
-      def be_present
-        BePresent.new
-      end
-    end
-
-  end
-end
+require dir / "model"
+require dir / "spec_collector"
+require dir / "spec_collection"
 
 # spec classes
 module DataMapper::Should
@@ -117,6 +65,7 @@ module DataMapper::Should
 
   end
 
+  # TODO: Next step is how to generate code to ensure spec.
   class BePresent < SpecBase
     name :be_present
   end
