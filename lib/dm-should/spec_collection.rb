@@ -21,8 +21,12 @@ module DataMapper
         specs[key]
       end
       
-      def to_ary
+      def to_a
         specs.dup
+      end
+
+      def each(&block)
+        @specs.each &block
       end
 
       def compiled_statement

@@ -32,9 +32,14 @@ module DataMapper
   class Property
   end
 
+
   module Resource
 
     def valid?
+      errors.clear!
+      self.class.specs.each do |spec|
+        spec.ensure(self)
+      end
       errors.empty?
     end
 
@@ -43,6 +48,7 @@ module DataMapper
       @errors = Should::Errors.new unless @errors
       @errors
     end
+
 
   end
 end
@@ -56,18 +62,32 @@ module DataMapper::Should
   
   class SpecBase
 
-    attr_accessor :property
+    attr_reader :property
+    include ::Extlib::Assertions
 
     def self.name(new_value=nil)
       @name = new_value if new_value.is_a? Symbol
       @name
     end
 
+    def initialize(property)
+      @property = property
+    end
+
+    def read_attribute(resource)
+      property.get!(resource)
+    end
+
   end
 
-  # TODO: Next step is how to generate code to ensure spec.
   class BePresent < SpecBase
     name :be_present
+
+    def ensure(resource)
+      assert_kind_of "resource", resource, DataMapper::Resource
+      resource.errors.add self unless read_attribute(resource).present?
+    end
+
   end
 end
 
@@ -75,7 +95,7 @@ end
 # core ext for be_present
 unless Object.respond_to? :present?
   class Object
-    def presnet?
+    def present?
       !blank?
     end
   end
@@ -85,9 +105,31 @@ end
 # how record.errors could be?
 module DataMapper::Should
   class Errors
-    def empty?
-      true
+
+    def initialize
+      @errors = []
     end
+
+
+    def empty?
+      @errors.empty?
+    end
+
+
+    def add(spec)
+      @errors << spec
+    end
+
+
+    def clear!
+      @errors.clear
+    end
+
+
+    def to_a
+      @errors.dup
+    end
+
   end
 end
 

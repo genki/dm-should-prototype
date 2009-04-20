@@ -17,7 +17,6 @@ module DataMapper
       end
 
       def should(spec)
-        spec.property = @property
         @specs << spec
       end
 
@@ -26,7 +25,7 @@ module DataMapper
       end
 
       def be_present
-        BePresent.new
+        BePresent.new(@property)
       end
 
     end
