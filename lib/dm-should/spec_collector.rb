@@ -1,6 +1,10 @@
 module DataMapper
   module Should
+    module AvailablePredicates
+    end
+
     class SpecCollector
+      include AvailablePredicates
 
       def self.collect(property, spec_proc)
         obj = self.new(property)
@@ -22,10 +26,6 @@ module DataMapper
 
       def collected
         @specs
-      end
-
-      def be_present
-        BePresent.new(@property)
       end
 
     end

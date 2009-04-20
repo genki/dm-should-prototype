@@ -10,6 +10,10 @@ module DataMapper::Should
       @name
     end
 
+    def self.predicates(&block)
+      DataMapper::Should::AvailablePredicates.module_eval &block if block
+    end
+
     def initialize(property)
       @property = property
     end
@@ -22,6 +26,12 @@ module DataMapper::Should
 
   class BePresent < SpecBase
     name :be_present
+    predicates do
+      def be_present
+        BePresent.new(@property)
+      end
+    end
+
 
     def ensure(resource)
       resource.errors.add self unless satisfy?(resource)
@@ -32,6 +42,7 @@ module DataMapper::Should
     end
 
   end
+
 end
 
 
