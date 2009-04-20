@@ -65,8 +65,11 @@ module DataMapper::Should
     name :be_present
 
     def ensure(resource)
-      assert_kind_of "resource", resource, DataMapper::Resource
-      resource.errors.add self unless read_attribute(resource).present?
+      resource.errors.add self unless satisfy?(resource)
+    end
+
+    def satisfy?(resource)
+      read_attribute(resource).present?
     end
 
   end
