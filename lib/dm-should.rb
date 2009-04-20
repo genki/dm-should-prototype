@@ -69,6 +69,13 @@ module DataMapper::Should
       @errors.dup
     end
 
+    def each(&block)
+      @errors.each(&block)
+    end
+
+    include Enumerable
+
   end
+
 end
 

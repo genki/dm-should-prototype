@@ -81,6 +81,7 @@ describe "Spec Classes of DataMapper::Should" do
     item = Item.new
     Item.specs[0].ensure(item)
     item.errors.should_not be_empty 
+    item.errors.all? { |spec| spec.satisfy?(item) == false }.should be
 
 
     item = Item.new
