@@ -22,6 +22,11 @@ module DataMapper::Should
       property.get(resource)
     end
 
+    # NOTE: All spec class could be ensured with this form?
+    def ensure(resource)
+      resource.errors.add self unless satisfy?(resource)
+    end
+
   end
 
   class BePresent < SpecBase
@@ -32,10 +37,6 @@ module DataMapper::Should
       end
     end
 
-
-    def ensure(resource)
-      resource.errors.add self unless satisfy?(resource)
-    end
 
     def satisfy?(resource)
       read_attribute(resource).present?
@@ -55,4 +56,8 @@ unless Object.respond_to? :present?
   end
 end
 
-
+class String
+  def blank?
+    self.gsub("　", " ").strip.empty?
+  end
+end
