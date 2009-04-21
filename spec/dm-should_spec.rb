@@ -43,8 +43,15 @@ describe "DataMapper::Resource with dm-should" do
     @record.valid?
   end
 
+  it "should have a DataMapper::Should::Errors as #errors" do
+    @record.errors.should be_a(DataMapper::Should::Errors)
+  end
 
-  it "should have specs as a class attribute" do
+end
+
+describe "Datamapper::Model with dm-should" do
+
+  it "should have a DataMapper::Should::SpecCollection as specs" do
     Item.specs.should be_a(DataMapper::Should::SpecCollection)
     Item.specs.to_a.should have(1).item
     Item.specs[0].should be_a(DataMapper::Should::BePresent)
@@ -53,25 +60,9 @@ describe "DataMapper::Resource with dm-should" do
     Item2.specs[1].should be_a(DataMapper::Should::BePresent)
   end
 
-
-  it "could check presence of attributes" do
-
-    # When record.name is nil
-    @record.valid?.should == false
-
-    # When @record.name is empty string.
-    @record.name = ""
-    @record.valid?.should == false
-
-    # When @record.name is string which is not empty.
-    @record.name = "foo"
-    @record.valid?.should == true
-
-  end
-
 end
 
-describe "Spec Classes of DataMapper::Should" do
+describe "SpecClasses of DataMapper::Should" do
 
   it "should has its symbolized name as an attribute" do
     DataMapper::Should::BePresent.name.should == :be_present
@@ -82,7 +73,6 @@ describe "Spec Classes of DataMapper::Should" do
     Item.specs[0].ensure(item)
     item.errors.should_not be_empty 
     item.errors.all? { |spec| spec.satisfy?(item) == false }.should be
-
 
     item = Item.new
     item.name = "satisfy"
