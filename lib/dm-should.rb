@@ -10,13 +10,10 @@ require dir / "model"
 require dir / "spec_collector"
 require dir / "spec_collection"
 require dir / "spec_classes"
+require dir / "before_typecast"
 
 
 module DataMapper
-
-  class Property
-  end
-
 
   module Resource
 
