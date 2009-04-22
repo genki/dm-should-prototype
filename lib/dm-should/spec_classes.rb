@@ -84,6 +84,41 @@ module DataMapper::Should
     end
 
   end
+
+  class BeUnique < SpecBase
+    name :be_unique
+    predicates do
+      def be_unique(options={})
+        BeUnique.new(@property, options)
+      end
+    end
+
+    attr_reader :scope
+
+    def initialize(property, options={})
+      super property
+      @options = options
+      setup_scopes
+    end
+
+    def setup_scopes
+      @scopes = @options[:scope] ?
+        Array(@options[:scope]).map { |sym| @property.model.properties[sym] } :
+        []
+    end
+
+
+    def satisfy?(resource)
+      conditions = { property.name => read_attribute(resource) }
+      conditions.merge! :id.not => resource.id unless resource.new_record?
+
+      @scopes.each do |scope|
+        conditions.merge! scope.name => scope.get(resource)
+      end
+
+      property.model.first(conditions).nil?
+    end
+  end
 end
 
 
