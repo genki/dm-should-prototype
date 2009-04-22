@@ -18,13 +18,20 @@ module DataMapper::Should
       @property = property
     end
 
-    def read_attribute(resource)
-      property.get(resource)
+    def read_attribute(resource, options={})
+      typecasted = property.get(resource)
+      options[:before_typecast] ?
+        property.get_before_typecast_value!(resource) :
+        typecasted
     end
 
     # NOTE: All spec class could be ensured with this form?
     def ensure(resource)
       resource.errors.add self unless satisfy?(resource)
+    end
+
+    def satisfy?(resource)
+      raise "implement #satisfy? method in each of subclasses"
     end
 
   end
@@ -40,6 +47,22 @@ module DataMapper::Should
 
     def satisfy?(resource)
       read_attribute(resource).present?
+    end
+
+  end
+
+  class BePositiveInteger < SpecBase
+    name :be_positive_integer
+    predicates do
+      def be_positive_integer
+        BePositiveInteger.new(@property)
+      end
+    end
+
+    def satisfy?(resource)
+      value = read_attribute(resource, :before_typecast => true)
+      return true if property.nullable? and value.nil?
+      value.to_s.match(/^\+?[0-9]+$/) != nil
     end
 
   end
