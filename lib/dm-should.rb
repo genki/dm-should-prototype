@@ -25,6 +25,7 @@ module DataMapper
       ensure_specs
       errors.empty?
     end
+    alias_method :satisfy?, :valid?
 
 
     def errors
