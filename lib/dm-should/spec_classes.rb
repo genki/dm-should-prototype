@@ -59,6 +59,7 @@ module DataMapper::Should
       end
     end
 
+    # allow only positive integers.
     def satisfy?(resource)
       value = read_attribute(resource, :before_typecast => true)
       return true if property.nullable? and value.nil?
@@ -67,6 +68,22 @@ module DataMapper::Should
 
   end
 
+  class BeInteger < SpecBase
+    name :be_integer
+    predicates do
+      def be_integer
+        BeInteger.new(@property)
+      end
+    end
+
+    # allow both positive and negative integers.
+    def satisfy?(resource)
+      value = read_attribute(resource, :before_typecast => true)
+      return true if property.nullable? and value.nil?
+      value.to_s.match(/^[\+-]?[0-9]+$/) != nil
+    end
+
+  end
 end
 
 
