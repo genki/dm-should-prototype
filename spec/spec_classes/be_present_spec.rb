@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__) , %w[.. /spec_helper])
 
-class BePresentSample1
+class BePresent1
   include DataMapper::Resource 
 
   property :id, Serial
@@ -10,7 +10,7 @@ class BePresentSample1
 
 end
 
-class BePresentSample2
+class BePresent2
   include DataMapper::Resource
   property :id, Serial
   property_with_spec :number, Integer do
@@ -23,7 +23,7 @@ end
 describe "when a [String] record.name should be present, record.valid? returns.." do
 
   before do
-    @record = BePresentSample1.new
+    @record = BePresent1.new
   end
   attr_reader :record
 
@@ -70,7 +70,7 @@ end
 describe "when a [Integer] record.number should be present, record.valid? returns.." do
 
   before do
-    @record = BePresentSample2.new
+    @record = BePresent2.new
   end
   attr_reader :record
 
@@ -101,6 +101,16 @@ describe "when a [Integer] record.number should be present, record.valid? return
       record.save
       record
     end.should raise_error
+  end
+
+end
+
+
+describe "BePresent#doc" do
+  subject { BePresent1.specs[:name].first.doc }
+
+  it "should be \"should be present\"" do
+    should == "should be present"
   end
 
 end

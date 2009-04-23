@@ -65,3 +65,13 @@ describe "when a [Integer] record.number should be positive integer, record.vali
   end
   
 end
+
+
+describe "BePositiveInteger#doc" do
+  subject { BePositiveInteger1.specs[:number].first.doc }
+
+  it "should be \"should be positive integer\"" do
+    should == "should be positive integer"
+  end
+
+end
