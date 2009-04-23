@@ -13,6 +13,11 @@ module DataMapper
       @specs
     end
 
+
+    def specdoc
+      specs.specdoc
+    end
+
   end
 
 end

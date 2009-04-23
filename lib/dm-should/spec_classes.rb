@@ -34,6 +34,16 @@ module DataMapper::Should
       raise "implement #satisfy? method in each of subclasses"
     end
 
+    def self.doc(new_value=nil)
+      @doc = new_value if new_value.is_a? String
+      @doc = "should " + @name.to_s.gsub("_", " ") unless @doc
+      @doc
+    end
+
+    def doc
+      self.class.doc
+    end
+
   end
 
   class BePresent < SpecBase
