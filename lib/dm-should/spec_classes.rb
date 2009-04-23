@@ -163,8 +163,11 @@ unless Object.respond_to? :present?
   end
 end
 
+# manage multi-byte space
 class String
+  MULTIBYTE_SPACE = [0x3000].pack("U").freeze
+
   def blank?
-    self.gsub("　", " ").strip.empty?
+    self.gsub(MULTIBYTE_SPACE, "").strip.empty?
   end
 end
