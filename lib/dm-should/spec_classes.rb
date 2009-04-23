@@ -103,31 +103,50 @@ module DataMapper::Should
       end
     end
 
-    attr_reader :scope
+    alias_method :original_doc, :doc
+    attr_reader :scopes, :doc 
 
     def initialize(property, options={})
       super property
       @options = options
       setup_scopes
+      setup_doc
     end
 
-    def setup_scopes
-      @scopes = @options[:scope] ?
-        Array(@options[:scope]).map { |sym| @property.model.properties[sym] } :
-        []
-    end
+      def setup_scopes
+        @scopes = @options[:scope] ?
+          Array(@options[:scope]).map { |sym| @property.model.properties[sym] } :
+          []
+      end
+      private :setup_scopes
+
+      def setup_doc
+        # This doc belongs to a instance not this klass because of the @scopes
+        # instance variable. 
+        doc_without_scope_list = original_doc
+        @doc = scopes.empty? ? 
+          doc_without_scope_list : "#{doc_without_scope_list} (scope: #{scope_list})" 
+      end
+      private :setup_doc
+
+      def scope_list
+        scopes.map { |s| s.name.to_s }.join(",")
+      end
+      private :scope_list
 
 
     def satisfy?(resource)
       conditions = { property.name => read_attribute(resource) }
       conditions.merge! :id.not => resource.id unless resource.new_record?
 
-      @scopes.each do |scope|
+      scopes.each do |scope|
         conditions.merge! scope.name => scope.get(resource)
       end
 
       property.model.first(conditions).nil?
     end
+
+
   end
 end
 
