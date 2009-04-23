@@ -135,6 +135,9 @@ module DataMapper::Should
       private :scope_list
 
 
+    # TODO: Should some unique index at the layer of database ensure this?
+    # In other words, where and how could I hanlde the exception about unique 
+    # index of a database?
     def satisfy?(resource)
       conditions = { property.name => read_attribute(resource) }
       conditions.merge! :id.not => resource.id unless resource.new_record?
