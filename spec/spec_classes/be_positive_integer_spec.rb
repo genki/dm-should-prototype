@@ -1,24 +1,5 @@
 require File.join(File.dirname(__FILE__) , %w[.. /spec_helper])
 
-class BePositiveInteger1
-  include DataMapper::Resource
-
-  property :id, Serial
-  property_with_spec :number, Integer do
-    should be_positive_integer
-  end
-end
-
-# when :allow => nil
-class BePositiveInteger2
-  include DataMapper::Resource
-
-  property :id, Serial
-  property_with_spec :number, Integer, :nullable => false do
-    should be_positive_integer
-  end
-end
-
 describe "when a [Integer] record.number should be positive integer, record.valid? returns .." do
 
   before do

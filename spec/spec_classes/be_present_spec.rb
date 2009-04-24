@@ -1,25 +1,5 @@
 require File.join(File.dirname(__FILE__) , %w[.. /spec_helper])
 
-class BePresent1
-  include DataMapper::Resource 
-
-  property :id, Serial
-  property_with_spec :name, String do
-    should be_present
-  end
-
-end
-
-class BePresent2
-  include DataMapper::Resource
-  property :id, Serial
-  property_with_spec :number, Integer do
-    should be_present
-  end
-
-  auto_migrate!
-end
-
 describe "when a [String] record.name should be present, record.valid? returns.." do
 
   before do

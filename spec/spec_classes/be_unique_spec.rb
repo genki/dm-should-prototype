@@ -1,27 +1,5 @@
 require File.join(File.dirname(__FILE__) , %w[.. /spec_helper])
 
-class BeUnique1
-  include DataMapper::Resource
-
-  property :id, Serial
-  property_with_spec :number, Integer do
-    should be_unique
-  end
-
-end
-
-class BeUnique2
-  include DataMapper::Resource
-  
-  property :id, Serial
-  property :category, String
-  property_with_spec :number, Integer do
-    should be_unique(:scope => :category)
-  end
-
-end
-
-
 describe "when a [Integer] record.number should be unique, record.valid? returns .." do
   before do
     @model1 = BeUnique1
