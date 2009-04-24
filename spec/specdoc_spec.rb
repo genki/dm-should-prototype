@@ -32,3 +32,38 @@ describe "DataMapper::Should provides model.specdoc system" do
   end
 
 end
+
+
+describe "BePresent#doc" do
+  subject { BePresent1.specs[:name].first.doc }
+
+  it "should be \"should be present\"" do
+    should == "should be present"
+  end
+
+end
+
+
+describe "BePositiveInteger#doc" do
+  subject { BePositiveInteger1.specs[:number].first.doc }
+
+  it "should be \"should be positive integer\"" do
+    should == "should be positive integer"
+  end
+
+end
+
+
+describe "BeUnique#doc" do
+
+  it "should be \"should be unique\" when no :scope option was given" do
+    doc = BeUnique1.specs[:number].first.doc
+    doc.should == "should be unique"
+  end
+
+  it "should include the list of scopes if any :scope option was given" do
+    doc = BeUnique2.specs[:number].first.doc
+    doc.should == "should be unique (scope: category)"
+  end
+
+end

@@ -84,13 +84,3 @@ describe "when a [Integer] record.number should be present, record.valid? return
   end
 
 end
-
-
-describe "BePresent#doc" do
-  subject { BePresent1.specs[:name].first.doc }
-
-  it "should be \"should be present\"" do
-    should == "should be present"
-  end
-
-end
