@@ -34,6 +34,16 @@ describe "DataMapper::Should provides model.specdoc system" do
 
 end
 
+describe "SpecCollection#scopes_to_be_translated, scopes" do
+  subject { SpecDoc1.specs.scopes }
+  it "should returns an Array of scopes to be translated" do
+    should include("be_present")
+    should include("be_unique")
+    should include("be_positive_integer")
+  end
+end
+
+
 describe "BePresent" do
   before(:all) { @spec_class = BePresent1.specs[:name].first }
 

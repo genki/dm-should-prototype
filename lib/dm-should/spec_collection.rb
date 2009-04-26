@@ -56,8 +56,10 @@ module DataMapper
       end
 
       def each(&block)
-        @specs.each &block
+        specs.each &block
       end
+
+      include Enumerable
 
       def specdoc
         doc = ""
@@ -70,6 +72,12 @@ module DataMapper
         end
         doc
       end
+
+
+      def scopes_to_be_translated
+        map { |spec_class| spec_class.scope }
+      end
+      alias_method :scopes, :scopes_to_be_translated
 
     end
   end
