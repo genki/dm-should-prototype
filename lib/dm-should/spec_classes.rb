@@ -44,6 +44,11 @@ module DataMapper::Should
       self.class.doc
     end
 
+    def scope_to_be_translated
+      self.class.name.to_s
+    end
+    alias_method :scope, :scope_to_be_translated
+
   end
 
   class BePresent < SpecBase

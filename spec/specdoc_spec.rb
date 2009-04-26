@@ -31,39 +31,71 @@ describe "DataMapper::Should provides model.specdoc system" do
     pending "implement later"
   end
 
-end
-
-
-describe "BePresent#doc" do
-  subject { BePresent1.specs[:name].first.doc }
-
-  it "should be \"should be present\"" do
-    should == "should be present"
-  end
 
 end
 
+describe "BePresent" do
+  before(:all) { @spec_class = BePresent1.specs[:name].first }
 
-describe "BePositiveInteger#doc" do
-  subject { BePositiveInteger1.specs[:number].first.doc }
+  describe "#doc" do
+    subject { @spec_class.doc }
 
-  it "should be \"should be positive integer\"" do
-    should == "should be positive integer"
+    it "should be \"should be present\"" do
+      should == "should be present"
+    end
   end
 
+  describe "#scope_to_be_translated, scope" do
+    subject { @spec_class.scope }
+    it "should be \"be_present\"" do
+      should == "be_present"
+    end
+  end
 end
 
 
-describe "BeUnique#doc" do
+describe "BePositiveInteger" do
+  before(:all){ @spec_class = BePositiveInteger1.specs[:number].first }
 
-  it "should be \"should be unique\" when no :scope option was given" do
-    doc = BeUnique1.specs[:number].first.doc
-    doc.should == "should be unique"
+  describe "#doc" do
+    subject { @spec_class.doc }
+
+    it "should be \"should be positive integer\"" do
+      should == "should be positive integer"
+    end
   end
 
-  it "should include the list of scopes if any :scope option was given" do
-    doc = BeUnique2.specs[:number].first.doc
-    doc.should == "should be unique (scope: category)"
+  describe "#scope_to_be_translated, scope" do
+    subject { @spec_class.scope }
+    it "should be \"be_positive_integer\"" do
+      should == "be_positive_integer"
+    end
+  end
+end
+
+
+describe "BeUnique" do
+  describe "#doc" do
+
+    it "should be \"should be unique\" when no :scope option was given" do
+      doc = BeUnique1.specs[:number].first.doc
+      doc.should == "should be unique"
+    end
+
+    it "should include the list of scopes if any :scope option was given" do
+      doc = BeUnique2.specs[:number].first.doc
+      doc.should == "should be unique (scope: category)"
+    end
   end
 
+  describe "#scope_to_be_translated, scope" do
+    subject { BeUnique1.specs[:number].first.scope }
+    it "should be \"be_unique\"" do
+      should == "be_unique"
+    end
+
+    it "how would it be when a record should be unique within particular scopes?" do
+      pending "think about this later"
+    end
+  end
 end
