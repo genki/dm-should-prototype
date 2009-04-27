@@ -61,13 +61,13 @@ module DataMapper
 
       include Enumerable
 
-      def specdoc
+      def to_s
         doc = ""
         doc << "=" + model.to_s + "\n" # the name of this model as a title
         @specs_mash.each do |property, specs_of_property|
           doc << "#{property}:\n"
           specs_of_property.each do |spec|
-            doc << "- #{spec.doc}\n"
+            doc << spec.doc(:field => "-") + "\n"
           end
         end
         doc

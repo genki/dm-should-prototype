@@ -42,8 +42,10 @@ module DataMapper::Should
       raise "implement #satisfy? method in each of subclasses"
     end
 
-    def doc
-      Translation.translate(scope_to_be_translated, default_values_for_translation)
+    def doc(additional_values={})
+      values = default_values_for_translation
+      values.update(additional_values) 
+      Translation.translate(scope_to_be_translated, values)
     end
 
     def setup_scope_to_be_translated

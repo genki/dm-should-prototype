@@ -15,7 +15,7 @@ module DataMapper
 
 
     def specdoc
-      specs.specdoc
+      specs.to_s
     end
 
   end

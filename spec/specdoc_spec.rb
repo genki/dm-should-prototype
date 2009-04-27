@@ -19,12 +19,11 @@ describe "DataMapper::Should provides model.specdoc system" do
   end
   
   it "should generate specdoc" do 
-    pending "this fails now"
     specdoc = SpecDoc1.specdoc
     specdoc.should include("number:")
     specdoc.should include("- should be present")
     specdoc.should include("- should be unique")
-    specdoc.should include("- should be positive integer")
+    specdoc.should include("- should be a positive number")
   end
 
 
