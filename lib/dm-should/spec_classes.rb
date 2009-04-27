@@ -16,7 +16,15 @@ module DataMapper::Should
 
     def initialize(property)
       @property = property
+      setup_scope_to_be_translated
+      setup_default_values_for_translation
     end
+
+    def setup_default_values_for_translation
+      @default_values_for_translation = { :field => field }
+    end
+    private :setup_default_values_for_translation
+    attr_reader :default_values_for_translation
 
     def read_attribute(resource, options={})
       typecasted = property.get(resource)
@@ -35,12 +43,14 @@ module DataMapper::Should
     end
 
     def doc
-      Translation.translate(self.class.name, {:field => field })
+      Translation.translate(scope_to_be_translated, default_values_for_translation)
     end
 
-    def scope_to_be_translated
-      self.class.name.to_s
+    def setup_scope_to_be_translated
+      @scope_to_be_translated = self.class.name.to_s
     end
+    private :setup_scope_to_be_translated
+    attr_reader :scope_to_be_translated
     alias_method :scope, :scope_to_be_translated
 
     def field
@@ -106,33 +116,35 @@ module DataMapper::Should
       end
     end
 
-    alias_method :original_doc, :doc
-    attr_reader :scopes, :doc 
+    attr_reader :scopes 
 
     def initialize(property, options={})
-      super property
+      @property = property
       @options = options
-      setup_scopes
-      setup_doc
+      setup_scopes_of_uniqueness
+      setup_scope_to_be_translated
+      setup_default_values_for_translation
     end
 
-      def setup_scopes
+      def setup_scopes_of_uniqueness
         @scopes = @options[:scope] ?
           Array(@options[:scope]).map { |sym| @property.model.properties[sym] } :
           []
       end
-      private :setup_scopes
+      private :setup_scopes_of_uniqueness
 
-      # TODO: this (scope: .. ) thing should be included by
-      # scope_to_be_translated. 
-      def setup_doc
-        # This doc belongs to a instance not this klass because of the @scopes
-        # instance variable. 
-        doc_without_scope_list = original_doc
-        @doc = scopes.empty? ? 
-          doc_without_scope_list : "#{doc_without_scope_list} (scope: #{scope_list})" 
+      def setup_scope_to_be_translated
+        @scope_to_be_translated = (!scopes.empty?) ? 
+          "be_unique_with_scopes" : "be_unique"
       end
-      private :setup_doc
+      private :setup_scope_to_be_translated
+
+      def setup_default_values_for_translation
+        super
+        @default_values_for_translation.update(:scopes => scope_list)
+      end
+      private :setup_default_values_for_translation
+
 
       def scope_list
         scopes.map { |s| s.name.to_s }.join(",")

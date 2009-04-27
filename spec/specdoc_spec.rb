@@ -100,13 +100,14 @@ describe "BeUnique" do
   end
 
   describe "#scope_to_be_translated, scope" do
-    subject { BeUnique1.specs[:number].first.scope }
-    it "should be \"be_unique\"" do
-      should == "be_unique"
+    it "should be \"be_unique.without_scopes\"" do
+      scope = BeUnique1.specs[:number].first.scope
+      scope.should == "be_unique"
     end
 
     it "how would it be when a record should be unique within particular scopes?" do
-      pending "think about this later"
+      scope = BeUnique2.specs[:number].first.scope
+      scope.should == "be_unique_with_scopes"
     end
   end
 end

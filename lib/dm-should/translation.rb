@@ -13,14 +13,14 @@ module DataMapper::Should
       :be_present => "%{field} can't be blank", 
       :be_unique  => "%{actual} has already been taken",
       :be_positive_integer => "%{actual} is not a positive number"
-    }
+    }.to_mash
 
     cattr_accessor :error_messages_like_dm_validations
     self.error_messages_like_dm_validations = {
       :be_present => "%{field} must not be blank",
       :be_unique  => "%{actual} is already taken",
       :be_positive_integer => "%{field} must be a positive number"
-    }
+    }.to_mash
 
     cattr_accessor :specdocs
     # TODO: should or must, which is better?
@@ -28,9 +28,10 @@ module DataMapper::Should
     # - %{field} must be present
     self.specdocs = {
       :be_present => "%{field} should be present",
-      :be_unique => "%{field} should be unique",
+      :"be_unique" => "%{field} should be unique",
+      :"be_unique_with_scopes" => "%{field} should be unique (scope: %{scopes})",
       :be_positive_integer => "%{field} should be a positive number"
-    }
+    }.to_mash
 
     def self.translate(scope, values={})
       String.new(specdocs[scope]) % values
