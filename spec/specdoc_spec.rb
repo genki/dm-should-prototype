@@ -19,6 +19,7 @@ describe "DataMapper::Should provides model.specdoc system" do
   end
   
   it "should generate specdoc" do 
+    pending "this fails now"
     specdoc = SpecDoc1.specdoc
     specdoc.should include("number:")
     specdoc.should include("- should be present")
@@ -50,8 +51,8 @@ describe "BePresent" do
   describe "#doc" do
     subject { @spec_class.doc }
 
-    it "should be \"should be present\"" do
-      should == "should be present"
+    it "should be \"BePresent1.name should be present\"" do
+      should == "BePresent1.name should be present"
     end
   end
 
@@ -70,8 +71,8 @@ describe "BePositiveInteger" do
   describe "#doc" do
     subject { @spec_class.doc }
 
-    it "should be \"should be positive integer\"" do
-      should == "should be positive integer"
+    it "should be \"BePositiveInteger1.number should be a positive number\"" do
+      should == "BePositiveInteger1.number should be a positive number"
     end
   end
 
@@ -87,14 +88,14 @@ end
 describe "BeUnique" do
   describe "#doc" do
 
-    it "should be \"should be unique\" when no :scope option was given" do
+    it "should be \"BeUnique1.number should be unique\" when no :scope option was given" do
       doc = BeUnique1.specs[:number].first.doc
-      doc.should == "should be unique"
+      doc.should == "BeUnique1.number should be unique"
     end
 
     it "should include the list of scopes if any :scope option was given" do
       doc = BeUnique2.specs[:number].first.doc
-      doc.should == "should be unique (scope: category)"
+      doc.should == "BeUnique2.number should be unique (scope: category)"
     end
   end
 

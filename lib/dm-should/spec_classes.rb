@@ -34,20 +34,18 @@ module DataMapper::Should
       raise "implement #satisfy? method in each of subclasses"
     end
 
-    def self.doc(new_value=nil)
-      @doc = new_value if new_value.is_a? String
-      @doc = "should " + @name.to_s.gsub("_", " ") unless @doc
-      @doc
-    end
-
     def doc
-      self.class.doc
+      Translation.translate(self.class.name, {:field => field })
     end
 
     def scope_to_be_translated
       self.class.name.to_s
     end
     alias_method :scope, :scope_to_be_translated
+
+    def field
+      [@property.model, @property.name].map { |x| x.to_s }.join(".") 
+    end
 
   end
 
@@ -125,6 +123,8 @@ module DataMapper::Should
       end
       private :setup_scopes
 
+      # TODO: this (scope: .. ) thing should be included by
+      # scope_to_be_translated. 
       def setup_doc
         # This doc belongs to a instance not this klass because of the @scopes
         # instance variable. 
