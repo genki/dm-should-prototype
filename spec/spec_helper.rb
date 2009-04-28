@@ -4,6 +4,7 @@ require 'rubygems'
 
 # gem 'dm-core', '0.9.11'
 require 'dm-core'
+require 'dm-aggregates'
 
 ROOT = Pathname(__FILE__).dirname.parent.expand_path
 

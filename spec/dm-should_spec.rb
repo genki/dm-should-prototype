@@ -47,6 +47,20 @@ describe "DataMapper::Resource with dm-should" do
     @record.errors.should be_a(DataMapper::Should::Errors)
   end
 
+
+  it "should be saved only when valid" do
+    Item.auto_migrate!
+
+    # Not saved when invalid
+    @record.valid?.should be_false
+    proc { @record.save }.should_not change(Item, :count) 
+
+    # Saved when valid
+    @record.name = ":name is present"
+    @record.valid?.should be_true
+    proc { @record.save }.should change(Item, :count).from(0).to(1)
+  end
+
 end
 
 describe "Datamapper::Model with dm-should" do
