@@ -32,10 +32,56 @@ module DataMapper::Should
       }
     }.to_mash
 
-    def self.translate(scope, values={})
-      String.new(translations[:specdocs][scope]) % values
+  class << self
+
+    # == arguments
+    # @param <String, Symbol> doctype
+    # @param <String, Symbol> scope  
+    # @param <Hash>           assigns  assigns when translate
+    # 
+    # But the first doctype argument can be ommited. 
+    # @param <String, Symbol> scope
+    # @param <Hash>           assigns
+    #
+    # In the latter case, the default doctype is automatically used. 
+
+    def translate(*args)
+      doctype, scope, assigns = normalize_arguments(*args)
+      String.new(raw(doctype, scope)) % assigns
     end
 
+
+    # === arguments
+    # this method handle same arguments as the abobe translate method, 
+    # but the 3rd argument (assigns) may not be used.
+    
+    def raw(*args)
+      doctype, scope, assigns = normalize_arguments(*args)
+      translations[doctype][scope]
+    end
+
+
+      def normalize_arguments(*args)
+        if available_doctypes? args[0] 
+          args
+        else
+          args.slice(0..1).unshift(default_doctype)
+        end
+        
+      end
+      private :normalize_arguments
+
+      def available_doctypes?(obj)
+        translations.key? obj
+      end
+
+      def default_doctype
+        :specdocs
+      end
+      private :default_doctype
+
+
+  end # end of class << self
   end
 
   class String < ::String
