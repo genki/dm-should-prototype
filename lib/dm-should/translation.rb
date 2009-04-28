@@ -3,9 +3,9 @@ module DataMapper::Should
 
     cattr_accessor :error_messages_like_rspec
     self.error_messages_like_rspec = {
-      :be_present => "expected %{field} be present, but it was %{actual}",
-      :be_unique  => "expected %{field} be unique, but it was %{actual}",
-      :be_positive_integer => "expected %{field} be positive integer, but it was %{actual}"
+      :be_present => "expected %{field} was present, got %{actual}",
+      :be_unique  => "expected %{field} was unique, got %{actual}",
+      :be_positive_integer => "expected %{field} was positive integer, got %{actual}"
     }.to_mash
 
     cattr_accessor :error_messages_like_rails
