@@ -1,4 +1,43 @@
+# models for everything, especially used in dm-should_spec.rb  
+class Item
+  include DataMapper::Resource 
 
+  property :id, Serial
+  property_with_spec :name, String do
+    should be_present
+  end
+
+end
+
+class Item2
+  include DataMapper::Resource 
+
+  property :id, Serial
+  property_with_spec :name, String do
+    should be_present
+  end
+  property_with_spec :price, Integer do
+    should be_present
+  end
+
+end
+
+
+# models for testing specdoc generation
+class SpecDoc1
+  include DataMapper::Resource
+
+  property :id, Serial
+  property_with_spec :number, String do
+    should be_present
+    should be_unique
+    should be_positive_integer
+  end
+
+end
+
+
+# models for testing each spec classes. 
 class BePresent1
   include DataMapper::Resource 
 
