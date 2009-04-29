@@ -58,6 +58,10 @@ module DataMapper::Should
       [@property.model, @property.name].map { |x| x.to_s }.join(".") 
     end
 
+    def inspect
+      "\#<#{self.class} #{doc.inspect} >"
+    end
+
   end
 
   class BePresent < SpecBase
