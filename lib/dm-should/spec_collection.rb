@@ -5,7 +5,7 @@ module DataMapper
     class SpecCollection
 
       attr_reader :model, :property
-      attr_reader :specs
+      attr_reader :specs, :specs_mash
 
       def initialize(model)
         @model = model 
@@ -32,8 +32,8 @@ module DataMapper
         def add_to_specs_mash(new_specs)
           new_specs.each do |spec|
             key = spec.property.name
-            @specs_mash[key] = []  unless @specs_mash.has_key? key
-            @specs_mash[key] << spec
+            specs_mash[key] = []  unless specs_mash.has_key? key
+            specs_mash[key] << spec
           end
         end
         private :add_to_specs_mash
@@ -42,8 +42,8 @@ module DataMapper
       def [](key)
         case key
           when Fixnum: specs[key]
-          when String,Symbol: @specs_mash[key]
-          when DataMapper::Property: @specs_mash[key.name]
+          when String,Symbol: specs_mash[key]
+          when DataMapper::Property: specs_mash[key.name]
         end
       end
 
@@ -52,7 +52,7 @@ module DataMapper
       end
 
       def to_mash
-        @specs_mash.dup
+        specs_mash.dup
       end
 
       def each(&block)
@@ -64,7 +64,7 @@ module DataMapper
       def to_s
         doc = ""
         doc << "=" + model.to_s + "\n" # the name of this model as a title
-        @specs_mash.each do |property, specs_of_property|
+        specs_mash.each do |property, specs_of_property|
           doc << "#{property}:\n"
           specs_of_property.each do |spec|
             doc << spec.doc(:field => "-") + "\n"
