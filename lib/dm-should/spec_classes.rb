@@ -16,15 +16,9 @@ module DataMapper::Should
 
     def initialize(property)
       @property = property
-      setup_scope_to_be_translated
+      setup_translation_scope
       setup_default_values_for_translation
     end
-
-    def setup_default_values_for_translation
-      @default_values_for_translation = { :field => field }
-    end
-    private :setup_default_values_for_translation
-    attr_reader :default_values_for_translation
 
     def read_attribute(resource, options={})
       typecasted = property.get(resource)
@@ -45,15 +39,20 @@ module DataMapper::Should
     def doc(additional_values={})
       values = default_values_for_translation
       values.update(additional_values) 
-      Translation.translate(scope_to_be_translated, values)
+      Translation.translate(translation_scope, values)
     end
 
-    def setup_scope_to_be_translated
-      @scope_to_be_translated = self.class.name.to_s
+    def setup_default_values_for_translation
+      @default_values_for_translation = { :field => field }
     end
-    private :setup_scope_to_be_translated
-    attr_reader :scope_to_be_translated
-    alias_method :scope, :scope_to_be_translated
+    private :setup_default_values_for_translation
+    attr_reader :default_values_for_translation
+
+    def setup_translation_scope
+      @translation_scope = self.class.name.to_s
+    end
+    private :setup_translation_scope
+    attr_reader :translation_scope
 
     def field
       [@property.model, @property.name].map { |x| x.to_s }.join(".") 
@@ -124,7 +123,7 @@ module DataMapper::Should
       @property = property
       @options = options
       setup_scopes_of_uniqueness
-      setup_scope_to_be_translated
+      setup_translation_scope
       setup_default_values_for_translation
     end
 
@@ -135,11 +134,11 @@ module DataMapper::Should
       end
       private :setup_scopes_of_uniqueness
 
-      def setup_scope_to_be_translated
-        @scope_to_be_translated = (!scopes.empty?) ? 
+      def setup_translation_scope
+        @translation_scope = (!scopes.empty?) ? 
           "be_unique_with_scopes" : "be_unique"
       end
-      private :setup_scope_to_be_translated
+      private :setup_translation_scope
 
       def setup_default_values_for_translation
         super

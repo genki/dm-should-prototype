@@ -35,7 +35,7 @@ describe "DataMapper::Should provides model.specdoc system" do
 end
 
 describe "SpecCollection#scopes_to_be_translated, scopes" do
-  subject { SpecDoc1.specs.scopes }
+  subject { SpecDoc1.specs.translation_scopes }
   it "should returns an Array of scopes to be translated" do
     should include("be_present")
     should include("be_unique")
@@ -56,7 +56,7 @@ describe "BePresent" do
   end
 
   describe "#scope_to_be_translated, scope" do
-    subject { @spec_class.scope }
+    subject { @spec_class.translation_scope }
     it "should be \"be_present\"" do
       should == "be_present"
     end
@@ -76,7 +76,7 @@ describe "BePositiveInteger" do
   end
 
   describe "#scope_to_be_translated, scope" do
-    subject { @spec_class.scope }
+    subject { @spec_class.translation_scope }
     it "should be \"be_positive_integer\"" do
       should == "be_positive_integer"
     end
@@ -100,12 +100,12 @@ describe "BeUnique" do
 
   describe "#scope_to_be_translated, scope" do
     it "should be \"be_unique.without_scopes\"" do
-      scope = BeUnique1.specs[:number].first.scope
+      scope = BeUnique1.specs[:number].first.translation_scope
       scope.should == "be_unique"
     end
 
     it "how would it be when a record should be unique within particular scopes?" do
-      scope = BeUnique2.specs[:number].first.scope
+      scope = BeUnique2.specs[:number].first.translation_scope
       scope.should == "be_unique_with_scopes"
     end
   end
