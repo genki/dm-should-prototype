@@ -42,8 +42,8 @@ end
 
 describe "Datamapper::Model with dm-should" do
 
-  it "should have a DataMapper::Should::SpecCollection as specs" do
-    Item.specs.should be_a(DataMapper::Should::SpecCollection)
+  it "should have a DataMapper::Should::Specs as specs" do
+    Item.specs.should be_a(DataMapper::Should::Specs)
     Item.specs.to_a.should have(1).item
     Item.specs[0].should be_a(DataMapper::Should::BePresent)
 

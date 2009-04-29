@@ -9,7 +9,7 @@ module DataMapper
 
     # A Model class has A SpecCollection.
     def specs
-      @specs = Should::SpecCollection.new(self) unless @specs
+      @specs = Should::ModelSpecs.new(self) unless @specs
       @specs
     end
 
