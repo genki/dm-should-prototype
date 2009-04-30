@@ -39,7 +39,7 @@ module DataMapper::Should
     # @param <String, Symbol> scope
     # @param <Hash>           assigns
 
-    def translate(scope, assigns)
+    def translate(scope, assigns={})
       if raw_message =  ( raw(scope) or  raw(["specdocs", scope].join(".")) )
         String.new(raw_message) % assigns if raw_message
       else

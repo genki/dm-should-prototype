@@ -11,4 +11,13 @@ describe DataMapper::Should::Translation do
     end
   end
 
+  describe ".translate" do
+
+    it "should defalt prefix to scope if needed" do
+      full = DataMapper::Should::Translation.translate("specdocs.be_present")
+      DataMapper::Should::Translation.translate("be_present").should == full
+    end
+
+  end
+
 end
