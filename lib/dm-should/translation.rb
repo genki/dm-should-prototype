@@ -18,7 +18,7 @@ module DataMapper::Should
       # TODO: should or must, which is better?
       # - %{field} should be present
       # - %{field} must be present
-      :specdocs => {
+      :specdoc => {
         :be_present => "%{field} should be present",
         :be_unique => "%{field} should be unique",
         :be_unique_within_scopes => "%{field} should be unique (scope: %{scopes})",
@@ -40,7 +40,7 @@ module DataMapper::Should
     # @param <Hash>           assigns
 
     def translate(scope, assigns={})
-      if raw_message =  ( raw(scope) or  raw(["specdocs", scope].join(".")) )
+      if raw_message =  ( raw(scope) or  raw(["specdoc", scope].join(".")) )
         String.new(raw_message) % assigns if raw_message
       else
         ""
