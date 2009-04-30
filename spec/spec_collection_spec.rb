@@ -28,14 +28,14 @@ describe "DataMappere::Should::Specs" do
     it "#specs is an array of spec classes" do
       subject.specs.should be_an(Array)  
       subject.specs.each do |spec_class|
-        spec_class.should be_a(DataMapper::Should::SpecBase)
+        spec_class.should be_a(DataMapper::Should::SpecClass)
       end
     end
 
     it "#specs_mash is a Mash" do
       subject.specs_mash.should be_a(Mash)
       subject.specs_mash[:number].should be_an(DataMapper::Should::Specs)
-      subject.specs_mash[:number][0].should be_a(DataMapper::Should::SpecBase)
+      subject.specs_mash[:number][0].should be_a(DataMapper::Should::SpecClass)
     end
 
   end

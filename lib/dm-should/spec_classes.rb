@@ -1,6 +1,6 @@
 module DataMapper::Should
   
-  class SpecBase
+  class SpecClass
 
     attr_reader :property
     include ::Extlib::Assertions
@@ -64,7 +64,7 @@ module DataMapper::Should
 
   end
 
-  class BePresent < SpecBase
+  class BePresent < SpecClass
     name :be_present
     predicates do
       def be_present
@@ -79,7 +79,7 @@ module DataMapper::Should
 
   end
 
-  class BePositiveInteger < SpecBase
+  class BePositiveInteger < SpecClass
     name :be_positive_integer
     predicates do
       def be_positive_integer
@@ -96,7 +96,7 @@ module DataMapper::Should
 
   end
 
-  class BeInteger < SpecBase
+  class BeInteger < SpecClass
     name :be_integer
     predicates do
       def be_integer
@@ -113,7 +113,7 @@ module DataMapper::Should
 
   end
 
-  class BeUnique < SpecBase
+  class BeUnique < SpecClass
     name :be_unique
     predicates do
       def be_unique(options={})
