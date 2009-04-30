@@ -27,7 +27,7 @@ module DataMapper
 
 
     def errors
-      @errors = Should::Errors.new unless @errors
+      @errors = Should::Errors.new(self) unless @errors
       @errors
     end
 
@@ -54,39 +54,58 @@ end
 
 # how record.errors could be?
 module DataMapper::Should
-  class Errors
+  class Errors < ModelSpecs
 
-    def initialize
-      @errors = []
+    alias_method :errors, :specs
+    alias_method :errors_mash, :specs_mash
+    alias_method :record, :scope
+
+    attr_writer :specs_mash
+    private :specs_mash=
+    alias_method :errors_mash=, :specs_mash=
+
+
+    def initialize(record)
+      assert_kind_of "scope of Errors", record, DataMapper::Resource
+      super record.class 
+      @record = record
     end
 
 
     def empty?
-      @errors.empty?
-    end
-
-
-    def add(spec)
-      @errors << spec
+      errors.empty?
     end
 
 
     def clear!
-      @errors.clear
+      errors.clear
+      self.errors_mash = Mash.new
     end
 
-
-    def to_a
-      @errors.dup
-    end
 
     def each(&block)
-      @errors.each(&block)
+      errors.each(&block)
     end
 
     include Enumerable
 
+    cattr_accessor :default_doctype
+    self.default_doctype = :warn_like_rspec
+
+    def error_messages
+      map { |spec| spec.doc }
+    end
+
+
+    TRANSLATION_SCOPE_PREFIX = "warn".freeze
+
+    def error_message_scopes
+      map { |spec| self.class.translation_scope spec }
+    end
+
   end
 
 end
+
+
 

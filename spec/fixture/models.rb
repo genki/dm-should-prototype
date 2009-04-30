@@ -36,6 +36,23 @@ class SpecDoc1
 
 end
 
+class SpecDoc2
+  include DataMapper::Resource
+
+  property :id, Serial
+  property_with_spec :number, Integer, :nullable => false do
+    should be_present
+    should be_unique
+    should be_positive_integer
+  end
+  property_with_spec :number2, Integer do
+    should be_present
+    should be_unique
+    should be_positive_integer
+  end
+
+end
+
 
 # models for testing each spec classes. 
 class BePresent1
