@@ -3,12 +3,6 @@ module DataMapper::Should
 
     cattr_accessor :translations
     self.translations = {
-      :warn_like_rspec => {
-        :be_present => "expected %{field} was present, got %{actual}",
-        :be_unique  => "expected %{field} was unique, got %{actual}",
-        :be_positive_integer => "expected %{field} was positive integer, got %{actual}"
-      },
-
       :warn_like_rails => {
         :be_present => "%{field} can't be blank", 
         :be_unique  => "%{actual} has already been taken",
@@ -26,60 +20,73 @@ module DataMapper::Should
       # - %{field} must be present
       :specdocs => {
         :be_present => "%{field} should be present",
-        :"be_unique" => "%{field} should be unique",
-        :"be_unique_with_scopes" => "%{field} should be unique (scope: %{scopes})",
+        :be_unique => "%{field} should be unique",
+        :be_unique_within_scopes => "%{field} should be unique (scope: %{scopes})",
         :be_positive_integer => "%{field} should be a positive number"
+      },
+
+      :warn => {
+        :be_present => "expected %{field} was present, got %{actual}",
+        :be_unique  => "expected %{field} was unique, got %{actual}",
+        :be_positive_integer => "expected %{field} was positive integer, got %{actual}"
       }
+
     }.to_mash
 
   class << self
 
     # == arguments
-    # @param <String, Symbol> doctype
-    # @param <String, Symbol> scope  
-    # @param <Hash>           assigns  assigns when translate
-    # 
-    # But the first doctype argument can be ommited. 
     # @param <String, Symbol> scope
     # @param <Hash>           assigns
-    #
-    # In the latter case, the default doctype is automatically used. 
 
-    def translate(*args)
-      doctype, scope, assigns = normalize_arguments(*args)
-      String.new(raw(doctype, scope)) % assigns
+    def translate(scope, assigns)
+      if raw_message =  ( raw(scope) or  raw(["specdocs", scope].join(".")) )
+        String.new(raw_message) % assigns if raw_message
+      else
+        ""
+      end
     end
 
 
-    # === arguments
-    # this method handle same arguments as the abobe translate method, 
-    # but the 3rd argument (assigns) may not be used.
-    
-    def raw(*args)
-      doctype, scope, assigns = normalize_arguments(*args)
-      translations[doctype][scope]
-    end
-
-
-      def normalize_arguments(*args)
-        if available_doctypes? args[0] 
-          args
+    def raw(scope)
+      return "" if scope.nil?
+      scopes = normalize_scope(scope)
+      scopes.inject(translations) do |result, k|
+        if (x = result[k]).nil?
+          return nil
         else
-          args.slice(0..1).unshift(default_doctype)
+          x
         end
-        
       end
-      private :normalize_arguments
+    end
 
-      def available_doctypes?(obj)
-        translations.key? obj
+
+      # == returns
+      # @return <Array> the array of normalized values
+      # - scope
+      # - model
+      # - field
+      def normalize_scope(scope)
+        parts = scope.split(".") 
+
+        model = nil
+        field = nil
+        result = []
+      
+        parts.each do |part|
+          if part =~ /^[A-Z]/
+            model = part
+          elsif model and field.nil?
+            field = part
+          else
+            result << part
+          end
+        end
+
+        #TODO: model and field value is now ignored. support later.
+        result
       end
-
-      def default_doctype
-        :specdocs
-      end
-      private :default_doctype
-
+      private :normalize_scope
 
   end # end of class << self
   end

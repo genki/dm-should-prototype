@@ -49,7 +49,7 @@ module DataMapper::Should
     attr_reader :default_values_for_translation
 
     def setup_translation_scope
-      @translation_scope = self.class.name.to_s
+      @translation_scope = [field, self.class.name.to_s].join(".")
     end
     private :setup_translation_scope
     attr_reader :translation_scope
@@ -139,8 +139,9 @@ module DataMapper::Should
       private :setup_scopes_of_uniqueness
 
       def setup_translation_scope
-        @translation_scope = (!scopes.empty?) ? 
-          "be_unique_with_scopes" : "be_unique"
+        spec_name = (!scopes.empty?) ? 
+          "be_unique_within_scopes" : "be_unique"
+        @translation_scope = [field, spec_name].join(".")
       end
       private :setup_translation_scope
 

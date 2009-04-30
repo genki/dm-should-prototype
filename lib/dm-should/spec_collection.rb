@@ -1,9 +1,31 @@
 module DataMapper
   module Should
 
+    module TranslationRole
+
+      def translation_scope(spec_class)
+        [translation_scope_prefix, spec_class.translation_scope].join(".") 
+      end
+
+      def translated_doc(spec_class)
+        Translation.translate(translation_scope(spec_class))
+      end
+      
+    end
+
+
     class Specs
 
       include DataMapper::Assertions
+
+
+      TRANSLATION_SCOPE_PREFIX = "specdoc".freeze
+
+      def self.translation_scope_prefix
+        self::TRANSLATION_SCOPE_PREFIX
+      end
+      extend TranslationRole
+
 
       attr_reader :scope, :specs
 
@@ -59,6 +81,7 @@ module DataMapper
 
     end
 
+
     class PropertySpecs < Specs
       
       alias_method :property, :scope
@@ -95,7 +118,7 @@ module DataMapper
         private :add_to_specs
 
         def add_to_specs_mash(new_specs)
-          new_specs.each do |spec|
+          Array(new_specs).each do |spec|
             key = spec.property.name
             specs_mash[key] = PropertySpecs.new(spec.property)  unless specs_mash.has_key? key
             specs_mash[key] << spec

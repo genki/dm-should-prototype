@@ -14,12 +14,6 @@ describe "DataMapper::Should provides model.specdoc system" do
     specdoc.should include("- should be a positive number")
   end
 
-
-  it "could generate translated specdoc" do
-    pending "implement later"
-  end
-
-
 end
 
 describe "BePresent" do
@@ -33,10 +27,10 @@ describe "BePresent" do
     end
   end
 
-  describe "#scope_to_be_translated, scope" do
+  describe "#translation_scope, scope" do
     subject { @spec_class.translation_scope }
-    it "should be \"be_present\"" do
-      should == "be_present"
+    it "should include \"be_present\"" do
+      should == "BePresent1.name.be_present"
     end
   end
 end
@@ -53,10 +47,10 @@ describe "BePositiveInteger" do
     end
   end
 
-  describe "#scope_to_be_translated, scope" do
+  describe "#translation_scope, scope" do
     subject { @spec_class.translation_scope }
-    it "should be \"be_positive_integer\"" do
-      should == "be_positive_integer"
+    it "should include \"be_positive_integer\"" do
+      should == "BePositiveInteger1.number.be_positive_integer"
     end
   end
 end
@@ -76,15 +70,15 @@ describe "BeUnique" do
     end
   end
 
-  describe "#scope_to_be_translated, scope" do
-    it "should be \"be_unique.without_scopes\"" do
+  describe "#translation_scope, scope" do
+    it "should include \"be_unique\"" do
       scope = BeUnique1.specs[:number].first.translation_scope
-      scope.should == "be_unique"
+      scope.should include("be_unique")
     end
 
-    it "how would it be when a record should be unique within particular scopes?" do
+    it "should include \"be_unique_within_scopes\" when a record should be unique within particular scopes?" do
       scope = BeUnique2.specs[:number].first.translation_scope
-      scope.should == "be_unique_with_scopes"
+      scope.should include("be_unique_within_scopes")
     end
   end
 end
