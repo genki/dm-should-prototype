@@ -20,7 +20,7 @@ module DataMapper
       property_names.each do |name|
         doc << "#{name}:\n"
         if property_specs = specs.on(name)
-          property_specs.translation_scopes_each do |ts, assigns|
+          property_specs.translation_keys_each do |ts, assigns|
             doc << Should::Translation.translate(ts, assigns.update(:field => "-"))
             doc << "\n"
           end

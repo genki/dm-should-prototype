@@ -19,7 +19,7 @@ describe DataMapper::Should::Translation do
 
     it "whose argument could be a spec class" do
 
-      # 1. use SpecClass#translation_scope with default prefix ( "specdoc." )
+      # 1. use SpecClass#translation_key with default prefix ( "specdoc." )
       # 2. assigns SpecClass#assigns.
       
       spec_class = SpecDoc1.specs[0]
@@ -40,8 +40,8 @@ end
 describe "a SpecClass should respond to" do
   subject {  SpecDoc1.specs[0] }
 
-  it "#translation_scope" do
-    subject.translation_scope.should == "be_present"
+  it "#translation_key" do
+    subject.translation_key.should == "be_present"
   end
 
   it "#assgins" do

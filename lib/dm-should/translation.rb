@@ -41,7 +41,7 @@ module DataMapper::Should
 
     def translate(scope, assigns={})
       if scope.is_a?(SpecClass)
-        String.new(raw(scope.translation_scope)) % scope.assigns.update(assigns)
+        String.new(raw(scope.translation_key)) % scope.assigns.update(assigns)
       elsif raw_message =  raw(scope)
         String.new(raw_message) % assigns
       end

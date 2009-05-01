@@ -36,11 +36,11 @@ module DataMapper::Should
 
     def doc(additional_values={})
       Translation.translate(
-        translation_scope,
+        translation_key,
         assigns.update(additional_values))
     end
 
-    def translation_scope
+    def translation_key
       self.class.name.to_s
     end
 
@@ -130,7 +130,7 @@ module DataMapper::Should
       end
       private :setup_scopes_of_uniqueness
 
-    def translation_scope
+    def translation_key
       spec_name = (!scopes.empty?) ? 
         "be_unique_within_scopes" : "be_unique"
     end

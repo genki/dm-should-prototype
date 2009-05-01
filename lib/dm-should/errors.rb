@@ -36,17 +36,17 @@ module DataMapper::Should
     include Enumerable
 
 
-    alias_method :error_messages, :translated_scopes
+    alias_method :error_messages, :translated_keys
 
-    def translation_scopes_each
+    def translation_keys_each
       if block_given?
         map do |spec_class|
-          yield self.class.translation_scope(spec_class), assigns(spec_class)
+          yield self.class.translation_key(spec_class), assigns(spec_class)
         end
       end
     end
 
-    def self.translation_scope(spec_class)
+    def self.translation_key(spec_class)
       "warn" + "." + super
     end
 

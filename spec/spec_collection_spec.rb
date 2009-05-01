@@ -30,7 +30,7 @@ describe DataMapper::Should::Specs do
     it "providing methods for specdoc generation" do
       subject.specdocs.first.should be_a(String)
 
-      subject.translation_scopes.first.should == "be_present"
+      subject.translation_keys.first.should == "be_present"
 
 
       # this method is used in order to delegate another translation system
@@ -39,10 +39,10 @@ describe DataMapper::Should::Specs do
       # instead of assigns as a Hash already constructed.
       # I just prepare SpecClass#assgins to provide default assigns hash.
       
-      subject.translation_scopes_each do |translation_scope, assigns|
+      subject.translation_keys_each do |translation_key, assigns|
 
         # translation scope to pass another translation system
-        translation_scope.should be_a(String)
+        translation_key.should be_a(String)
 
         # assign values for translating
         assigns.should be_a(Hash)
@@ -125,13 +125,13 @@ describe DataMapper::Should::Errors do
   end
 
   it "should add prefix of translation scope" do
-    subject.translation_scopes_each do |translation_scope, assigns|
-      translation_scope.should match(/^warn\./)
+    subject.translation_keys_each do |translation_key, assigns|
+      translation_key.should match(/^warn\./)
     end
   end
 
   it "should add actual value to assigns" do
-    subject.translation_scopes_each do |translation_scope, assigns|
+    subject.translation_keys_each do |translation_key, assigns|
       assigns.should have_key(:actual)
       assigns[:actual].should == "nil"
     end
