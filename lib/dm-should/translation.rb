@@ -27,7 +27,7 @@ module DataMapper::Should
 
       :warn => {
         :be_present => "expected %{field} was present, got %{actual}",
-        :be_unique  => "expected %{field} was unique, got %{actual}",
+        :be_unique  => "expected %{field} was unique, but it wasn't",
         :be_positive_integer => "expected %{field} was positive integer, got %{actual}"
       }
 
@@ -36,22 +36,29 @@ module DataMapper::Should
   class << self
 
     # == arguments
-    # @param <String, Symbol> scope
-    # @param <Hash>           assigns
+    # @param <String, Symbol, DataMapper::Should::SpecClass> scope
+    # @param <Hash, Mash>                                    assigns
 
     def translate(scope, assigns={})
-      if raw_message =  ( raw(scope) or  raw(["specdoc", scope].join(".")) )
-        String.new(raw_message) % assigns if raw_message
-      else
-        ""
+      if scope.is_a?(SpecClass)
+        String.new(raw(scope.translation_scope)) % scope.assigns.update(assigns)
+      elsif raw_message =  raw(scope)
+        String.new(raw_message) % assigns
       end
     end
 
 
+    # == arguments
+    # @param <String, Symbol, DataMapper::Should::SpecClass> scope 
+    
     def raw(scope)
       return "" if scope.nil?
       scopes = normalize_scope(scope)
-      scopes.inject(translations) do |result, k|
+      lookup(scopes) or lookup(scopes.unshift("specdoc")) or ""
+    end
+
+    def lookup(array)
+      array.inject(translations) do |result, k|
         if (x = result[k]).nil?
           return nil
         else
