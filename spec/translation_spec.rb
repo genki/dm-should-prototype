@@ -20,7 +20,7 @@ describe DataMapper::Should::Translation do
     it "whose argument could be a spec class" do
 
       # 1. use SpecClass#translation_scope with default prefix ( "specdoc." )
-      # 2. assgins SpecClass#assigns 
+      # 2. assigns SpecClass#assigns.
       
       spec_class = SpecDoc1.specs[0]
       full = DS::Translation.translate("specdoc.be_present", spec_class.assigns)
