@@ -12,3 +12,9 @@ require ROOT + 'lib/dm-should'
 require ROOT + 'spec/fixture/models'
 
 DataMapper.setup(:default, 'sqlite3::memory:')
+
+Spec::Runner.configure do |c|
+  c.include(Module.new do
+    DS = DataMapper::Should
+  end)
+end
