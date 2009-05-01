@@ -3,12 +3,50 @@ module DataMapper
 
     module TranslationRole
 
-      def translation_scope(spec_class)
-        [translation_scope_prefix, spec_class.translation_scope].join(".") 
+      def self.included(klass)
+        klass.class_eval do
+          include InstanceMethods
+          extend ClassMethods
+        end
       end
 
-      def translated_doc(spec_class)
-        Translation.translate(translation_scope(spec_class))
+      module ClassMethods
+        def translation_scope(spec_class)
+          if method_defined?(:translation_scope_prefix) # define prefix on child class if needed
+            [translation_scope_prefix, spec_class.translation_scope].join(".") 
+          else
+            spec_class.translation_scope
+          end
+        end
+
+        def translated_doc(spec_class)
+          Translation.translate(translation_scope(spec_class), spec_class.assigns)
+        end
+      end
+
+      module InstanceMethods
+
+        def translation_scopes
+          specs.map do |spec_class|
+            self.class.translation_scope(spec_class)
+          end
+        end
+
+        def translated_scopes
+          specs.map do |spec_class|
+            self.class.translated_doc(spec_class)
+          end
+        end
+        alias_method :specdocs, :translated_scopes
+
+        def translation_scopes_each 
+          if block_given?
+            specs.map do |spec_class|
+              yield self.class.translation_scope(spec_class), spec_class.assigns
+            end
+          end
+        end
+
       end
       
     end
@@ -18,14 +56,7 @@ module DataMapper
 
       include DataMapper::Assertions
 
-
-      TRANSLATION_SCOPE_PREFIX = "specdoc".freeze
-
-      def self.translation_scope_prefix
-        self::TRANSLATION_SCOPE_PREFIX
-      end
-      extend TranslationRole
-
+      include TranslationRole
 
       attr_reader :scope, :specs
 
