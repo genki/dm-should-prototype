@@ -12,37 +12,35 @@ module DataMapper
 
       module ClassMethods
         def translation_scope(spec_class)
-          if method_defined?(:translation_scope_prefix) # define prefix on child class if needed
-            [translation_scope_prefix, spec_class.translation_scope].join(".") 
-          else
-            spec_class.translation_scope
-          end
-        end
-
-        def translated_doc(spec_class)
-          Translation.translate(translation_scope(spec_class), spec_class.assigns)
+          spec_class.translation_scope
         end
       end
 
       module InstanceMethods
 
         def translation_scopes
-          specs.map do |spec_class|
+          map do |spec_class|
             self.class.translation_scope(spec_class)
           end
         end
 
         def translated_scopes
-          specs.map do |spec_class|
-            self.class.translated_doc(spec_class)
+          map do |spec_class|
+            Translation.translate(
+              self.class.translation_scope(spec_class), assigns(spec_class)) 
           end
         end
         alias_method :specdocs, :translated_scopes
 
+
+        def assigns(spec_class)
+          spec_class.assigns
+        end
+
         def translation_scopes_each 
           if block_given?
-            specs.map do |spec_class|
-              yield self.class.translation_scope(spec_class), spec_class.assigns
+            map do |spec_class|
+              yield self.class.translation_scope(spec_class), assigns(spec_class)
             end
           end
         end

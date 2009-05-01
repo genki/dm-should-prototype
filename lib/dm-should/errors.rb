@@ -36,29 +36,23 @@ module DataMapper::Should
     include Enumerable
 
 
-    TRANSLATION_SCOPE_PREFIX = "warn".freeze
+    alias_method :error_messages, :translated_scopes
 
-    def error_message_scopes
-      map { |spec| self.class.translation_scope spec }
-    end
-
-    # TODO: think about shorter good method name of this later.
-    def error_message_scopes_each
+    def translation_scopes_each
       if block_given?
-        each do |spec|
-          scope = self.class.translation_scope spec
-          actual = spec.read_attribute(record)
-          yield scope, {:actual => actual.inspect, :field => spec.field } 
+        map do |spec_class|
+          yield self.class.translation_scope(spec_class), assigns(spec_class)
         end
       end
     end
 
-    def error_messages 
-      result = []
-      error_message_scopes_each do |scope, assigns|
-        result << Translation.translate(scope, assigns)
-      end
-      result
+    def self.translation_scope(spec_class)
+      "warn" + "." + super
+    end
+
+    def assigns(spec_class)
+      actual = spec_class.read_attribute(record)
+      spec_class.assigns.update(:actual => actual.inspect)
     end
 
   end

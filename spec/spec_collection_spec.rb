@@ -100,7 +100,16 @@ end
 
 
 describe DataMapper::Should::Errors do
-  subject { SpecDoc1.new.errors }
+  before(:all) do
+    SpecDoc2.auto_migrate!
+    @record = SpecDoc2.new
+    record.valid?
+  end
+  attr_reader :record
+
+  subject { record.errors }
+
+
   it "should be a subclass of DS::ModelSpecs" do
     should be_a(DS::Specs)
     should be_a(DS::ModelSpecs) 
@@ -111,11 +120,22 @@ describe DataMapper::Should::Errors do
   end
 
   it "should privide error message using collected spec classes" do
-    SpecDoc2.auto_migrate!
-    record = SpecDoc2.new
-    record.valid?
-    pending
-    record.errors.error_messages
+    # pp subject.error_messages
+    subject.error_messages
   end
+
+  it "should add prefix of translation scope" do
+    subject.translation_scopes_each do |translation_scope, assigns|
+      translation_scope.should match(/^warn\./)
+    end
+  end
+
+  it "should add actual value to assigns" do
+    subject.translation_scopes_each do |translation_scope, assigns|
+      assigns.should have_key(:actual)
+      assigns[:actual].should == "nil"
+    end
+  end
+
 end
 
