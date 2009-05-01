@@ -16,6 +16,6 @@ require dir / "specs"
 %w[property_specs model_specs errors].each do |file|
   require dir / "specs" / file
 end
-require dir / "before_typecast"
+require dir / "property"
 require dir / "model"
 require dir / "resource"
