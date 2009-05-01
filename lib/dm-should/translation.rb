@@ -110,6 +110,55 @@ module DataMapper::Should
     end
   end
 
+  module TranslationRoleOfSpecs
+
+    def self.included(klass)
+      klass.class_eval do
+        include InstanceMethods
+        extend ClassMethods
+      end
+    end
+
+    module ClassMethods
+      def translation_key(spec_class)
+        spec_class.translation_key
+      end
+    end
+
+    module InstanceMethods
+
+      def translation_keys
+        map do |spec_class|
+          self.class.translation_key(spec_class)
+        end
+      end
+
+      def translated_keys
+        map do |spec_class|
+          Translation.translate(
+            self.class.translation_key(spec_class), assigns(spec_class)) 
+        end
+      end
+      alias_method :specdocs, :translated_keys
+
+
+      def assigns(spec_class)
+        spec_class.assigns
+      end
+
+      def translation_keys_each 
+        if block_given?
+          map do |spec_class|
+            yield self.class.translation_key(spec_class), assigns(spec_class)
+          end
+        end
+      end
+
+    end
+    
+  end
+
+
 end
 
 
