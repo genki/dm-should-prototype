@@ -16,8 +16,6 @@ module DataMapper::Should
 
     def initialize(property)
       @property = property
-      setup_translation_scope
-      setup_default_values_for_translation
     end
 
     def read_attribute(resource, options={})
@@ -37,25 +35,21 @@ module DataMapper::Should
     end
 
     def doc(additional_values={})
-      values = default_values_for_translation
-      values.update(additional_values) 
-      Translation.translate(translation_scope, values)
+      Translation.translate(
+        translation_scope,
+        assigns.update(additional_values))
     end
 
-    def setup_default_values_for_translation
-      @default_values_for_translation = { :field => field }
+    def translation_scope
+      self.class.name.to_s
     end
-    private :setup_default_values_for_translation
-    attr_reader :default_values_for_translation
-
-    def setup_translation_scope
-      @translation_scope = [field, self.class.name.to_s].join(".")
-    end
-    private :setup_translation_scope
-    attr_reader :translation_scope
 
     def field
       [@property.model, @property.name].map { |x| x.to_s }.join(".") 
+    end
+
+    def assigns
+      { :field => field }
     end
 
     def inspect
@@ -127,8 +121,6 @@ module DataMapper::Should
       @property = property
       @options = options
       setup_scopes_of_uniqueness
-      setup_translation_scope
-      setup_default_values_for_translation
     end
 
       def setup_scopes_of_uniqueness
@@ -138,19 +130,14 @@ module DataMapper::Should
       end
       private :setup_scopes_of_uniqueness
 
-      def setup_translation_scope
-        spec_name = (!scopes.empty?) ? 
-          "be_unique_within_scopes" : "be_unique"
-        @translation_scope = [field, spec_name].join(".")
-      end
-      private :setup_translation_scope
+    def translation_scope
+      spec_name = (!scopes.empty?) ? 
+        "be_unique_within_scopes" : "be_unique"
+    end
 
-      def setup_default_values_for_translation
-        super
-        @default_values_for_translation.update(:scopes => scope_list)
-      end
-      private :setup_default_values_for_translation
-
+    def assigns
+      super.update(:scopes => scope_list)
+    end
 
       def scope_list
         scopes.map { |s| s.name.to_s }.join(",")
