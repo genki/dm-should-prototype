@@ -40,9 +40,9 @@ module DataMapper::Should
 
     def [](key)
       case key
-        when Fixnum: specs[key]
-        when String,Symbol: specs_mash[key]
-        when DataMapper::Property: specs_mash[key.name]
+        when Fixnum; specs[key]
+        when String,Symbol; specs_mash[key]
+        when DataMapper::Property; specs_mash[key.name]
       end
     end
     alias_method :on, :[]

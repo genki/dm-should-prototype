@@ -1,3 +1,4 @@
+# coding: UTF-8
 require File.join(File.dirname(__FILE__) , %w[.. /spec_helper])
 
 describe "when a [String] record.name should be present, record.valid? returns.." do
