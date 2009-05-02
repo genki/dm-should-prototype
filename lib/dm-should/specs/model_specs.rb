@@ -26,11 +26,16 @@ module DataMapper::Should
       def add_to_specs_mash(new_specs)
         Array(new_specs).each do |spec|
           key = spec.property.name
-          specs_mash[key] = PropertySpecs.new(spec.property)  unless specs_mash.has_key? key
+        specs_mash[key] = new_property_specs(spec)  unless specs_mash.has_key? key
           specs_mash[key] << spec
         end
       end
       private :add_to_specs_mash
+
+      def new_property_specs(spec)
+        PropertySpecs.new(spec.property)
+      end
+      private :new_property_specs
 
 
     def [](key)

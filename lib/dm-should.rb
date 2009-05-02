@@ -13,7 +13,7 @@ require dir / "spec_class"
 end
 require dir / "translation"
 require dir / "specs"
-%w[property_specs model_specs errors].each do |file|
+%w[property_specs model_specs errors errors_on_property].each do |file|
   require dir / "specs" / file
 end
 require dir / "property"

@@ -17,6 +17,11 @@ module DataMapper::Should
       @scope = record
     end
 
+      def new_property_specs(spec)
+        ErrorsOnProperty.new(:actual => spec.property.get(record), :property => spec.property)
+      end
+      private :new_property_specs
+
 
     def empty?
       errors.empty?
