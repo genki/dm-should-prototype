@@ -38,6 +38,7 @@ DataMapper::Should::Specs Available subclasses
 - ModelSpecs
 - PropertySpecs
 - Errors
+- ErrorsOnProperty
 
 DataMapper::Should::Specs whose Role
 - storing SpecClass instances

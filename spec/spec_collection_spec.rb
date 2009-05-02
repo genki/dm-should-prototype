@@ -13,6 +13,9 @@ describe DataMapper::Should::Specs do
     it "Errors" do
       should == DS::Errors.superclass.superclass
     end
+    it "ErrorsOnProperty" do
+      should == DS::ErrorsOnProperty.superclass.superclass
+    end
   end
 
   describe "whose Role" do
