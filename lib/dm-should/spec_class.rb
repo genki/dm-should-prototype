@@ -5,6 +5,13 @@ module DataMapper::Should
     attr_reader :property
     include ::Extlib::Assertions
 
+    def self.inherited(klass)
+      klass.class_eval do
+        # setup default name
+        name self.to_s.sub("DataMapper::Should::", "").snake_case.to_sym 
+      end
+    end
+
     def self.name(new_value=nil)
       @name = new_value if new_value.is_a? Symbol
       @name

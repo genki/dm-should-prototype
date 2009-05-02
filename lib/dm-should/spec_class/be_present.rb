@@ -1,7 +1,6 @@
 module DataMapper::Should
   class BePresent < SpecClass
 
-    name :be_present
     predicates do
       def be_present
         BePresent.new(@property)

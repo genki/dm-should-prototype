@@ -1,6 +1,5 @@
 module DataMapper::Should
   class BeInteger < SpecClass
-    name :be_integer
     predicates do
       def be_integer
         BeInteger.new(@property)
@@ -17,7 +16,6 @@ module DataMapper::Should
   end
 
   class BePositiveInteger < SpecClass
-    name :be_positive_integer
     predicates do
       def be_positive_integer
         BePositiveInteger.new(@property)

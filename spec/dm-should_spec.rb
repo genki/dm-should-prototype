@@ -52,6 +52,8 @@ describe "SpecClasses of DataMapper::Should" do
 
   it "should has its symbolized name as an attribute" do
     DataMapper::Should::BePresent.name.should == :be_present
+    DataMapper::Should::BeInteger.name.should == :be_integer
+    DataMapper::Should::BeUnique.name.should == :be_unique
   end
 
   it "could ensure itself of a given resource" do

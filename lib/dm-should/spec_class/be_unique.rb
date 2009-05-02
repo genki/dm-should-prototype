@@ -1,7 +1,6 @@
 module DataMapper::Should
   class BeUnique < SpecClass
 
-    name :be_unique
     predicates do
       def be_unique(options={})
         BeUnique.new(@property, options)
