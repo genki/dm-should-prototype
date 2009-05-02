@@ -1,1 +1,123 @@
-= dm-should
+== dm-should
+
+=== current tree
+lib
+|-- dm-should
+|   |-- model.rb
+|   |-- property.rb
+|   |-- resource.rb
+|   |-- spec_class
+|   |   |-- be_integer.rb
+|   |   |-- be_present.rb
+|   |   `-- be_unique.rb
+|   |-- spec_class.rb
+|   |-- spec_collector.rb
+|   |-- specs
+|   |   |-- errors.rb
+|   |   |-- errors_on_property.rb
+|   |   |-- model_specs.rb
+|   |   `-- property_specs.rb
+|   |-- specs.rb
+|   |-- translation.rb
+|   `-- version.rb
+`-- dm-should.rb
+
+3 directories, 16 files
+
+=== current specdoc
+DataMapper::Resource with dm-should
+- should respond_to #ensure_specs
+- #ensure_specs should executed when #valid?
+- should have a DataMapper::Should::Errors as #errors
+- should be saved only when valid
+
+Datamapper::Model with dm-should
+- should have a DataMapper::Should::Specs as specs
+
+DataMapper::Should::Specs Available subclasses
+- ModelSpecs
+- PropertySpecs
+- Errors
+
+DataMapper::Should::Specs whose Role
+- storing SpecClass instances
+- providing methods for specdoc generation
+
+DataMapper::Should::ModelSpecs
+- should be a subclass of DS::Specs
+- whose scope should be a model
+- should have specs as a Mash in addition to the specs Array
+- should provide specs on a particular property
+- should privide specdoc of the model belongs to
+
+DataMapper::Should::PropertySpecs
+- should be a subclass of DS::Specs
+- whose scope should be a property
+- should provide specdoc of the property belongs to
+
+DataMapper::Should::Errors
+- should be a subclass of DS::ModelSpecs
+- whose scope should be a record
+- should provide error message using spec classes it has
+- should add prefix of translation scope
+- should add actual value to assigns
+
+DataMapper::Should::ErrorsOnProperty
+- should be a subclass of DS::Specs
+- should provide error message using spec classes it has
+- should add prefix of translation scope
+- should add actual value to assigns
+
+DataMapper::Should::SpecCollector
+- should collect spec from given proc
+
+model.specdoc
+- should provide the specdoc of model
+- should contain all property names
+
+DataMapper::Should::Translation.raw
+- should returns sentence not yet translated
+
+DataMapper::Should::Translation.translate
+- whose argument could be a scope string
+- whose argument could be a spec class
+- should add defalt prefix to scope if needed
+
+a SpecClass should respond to
+- #translation_key
+- #assgins
+- #doc
+
+SpecClasses of DataMapper::Should
+- should has its symbolized name as an attribute
+- could ensure itself of a given resource
+
+when a [Integer] record.number should be positive integer, record.valid? returns ..
+- true  if record.number is numeric string
+- true  if record.number is a Integer
+- false if record.number is a negative integer
+- false if record.number isn't numeric string or a Integer now, even if it respond to #to_i method.
+- true  if record.number is nil and :nullable => true [default]
+- false if record.number is nil and :nullable => false
+
+when a [String] record.name should be present, record.valid? returns..
+- false if record.name is nil
+- false if record.name is empty string
+- false if record.name only contains invisible string
+- false if record.name only contains invisible string ( including 2 byte space )
+- true  if record.name is string that is not empty string.
+
+when a [Integer] record.number should be present, record.valid? returns..
+- false if record.number is nil
+- false if record.number is empty string
+- true  if record.number is numeric string
+- true  if record.number is a Fixnum
+- true  if record.number is an Array
+
+when a [Integer] record.number should be unique, record.valid? returns ..
+- true  if it is unique [when create]
+- false if it isn't unique
+- true  if it is unique [when update]
+- true  if it is unique within some scopes
+- false if it is also not unique within some scopes
+
