@@ -1,28 +1,28 @@
 == dm-should
 
 === current tree
-lib
-|-- dm-should
-|   |-- model.rb
-|   |-- property.rb
-|   |-- resource.rb
-|   |-- spec_class
-|   |   |-- be_integer.rb
-|   |   |-- be_present.rb
-|   |   `-- be_unique.rb
-|   |-- spec_class.rb
-|   |-- spec_collector.rb
-|   |-- specs
-|   |   |-- errors.rb
-|   |   |-- errors_on_property.rb
-|   |   |-- model_specs.rb
-|   |   `-- property_specs.rb
-|   |-- specs.rb
-|   |-- translation.rb
-|   `-- version.rb
-`-- dm-should.rb
+  lib
+  |-- dm-should
+  |   |-- model.rb
+  |   |-- property.rb
+  |   |-- resource.rb
+  |   |-- spec_class
+  |   |   |-- be_integer.rb
+  |   |   |-- be_present.rb
+  |   |   `-- be_unique.rb
+  |   |-- spec_class.rb
+  |   |-- spec_collector.rb
+  |   |-- specs
+  |   |   |-- errors.rb
+  |   |   |-- errors_on_property.rb
+  |   |   |-- model_specs.rb
+  |   |   `-- property_specs.rb
+  |   |-- specs.rb
+  |   |-- translation.rb
+  |   `-- version.rb
+  `-- dm-should.rb
 
-3 directories, 16 files
+  3 directories, 16 files
 
 === current specdoc
 DataMapper::Resource with dm-should
