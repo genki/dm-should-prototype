@@ -113,4 +113,13 @@ class BeUnique2
 
 end
 
+class Match1
+ include DataMapper::Resource 
+
+ property :id, Serial
+ property_with_spec :name, String do
+   should match(/^A/)
+ end
+end
+
 

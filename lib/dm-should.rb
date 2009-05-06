@@ -8,7 +8,7 @@ dir = Pathname(__FILE__).dirname.expand_path / 'dm-should'
 require dir / "version"
 require dir / "spec_collector"
 require dir / "spec_class"
-%w[be_present be_integer be_unique].each do |file|
+%w[be_present be_integer be_unique match].each do |file|
   require dir / "spec_class" / file
 end
 require dir / "translation"
