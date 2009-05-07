@@ -6,7 +6,7 @@ describe "=== DataMapper::Resource (Instance methods) with dm-should" do
     before(:each) {  @item = Item.new  }
     attr_reader :item
 
-    it "should return true if a record satisfy its specs and false if it doesn't" do
+    it "should return +true+ if a record satisfy its specs and +false+ if it doesn't" do
 
       item.valid?.should be_false
 
@@ -15,7 +15,7 @@ describe "=== DataMapper::Resource (Instance methods) with dm-should" do
 
     end
 
-    it "a record shouldn't be saved when valid? returns false" do
+    it "a record shouldn't be saved when valid? returns +false+" do
       Item.auto_migrate!
 
       item.valid?.should be_false
@@ -34,26 +34,26 @@ h4 "errors method" do
   before(:each) {  @record = Item.new  }
   attr_reader :record
 
-  it "should return an instance of DataMapper::Should::Errors."  do
+  it "should return an instance of <tt>DataMapper::Should::Errors</tt>."  do
     record.errors.should be_a(DataMapper::Should::Errors)
   end
 
-  it "Once valid? method executed and return false, record.errors has details about it" do
+  it "Once valid? method executed and return +false+, record.errors has details about it" do
     record.valid?
     record.errors.empty?.should == false
   end
 
-  it "You can generate an Array of error messages by passing a block to translation_keys_each method:
+  it "You can generate error messages by passing a block to +translation_keys_each+ method:
     record.errors.translation_keys_each do |translation_key, assigns|
       your_translation_system.translate(translation_key, assigns)
     end
 
-  The arguments of the block is translation_key and assigns:
+  The arguments of the block is +translation_key+ and +assigns+:
   [<b>translation_key</b>]
     a translation_key is kind of 'warn.be_present' or 'warn.be_unique'.
     They are combinations of 'doctype.spectype'.
   [<b>assigns[:field]</b>]
-    is now a String like 'Modelname.fieldname'. this is also supposed to be translated 
+    is now a +String+ like 'Modelname.fieldname'. this is also supposed to be translated 
   [<b>assigns[:actual]</b>]
     is an actual value at the recently validated field 
   " do 
@@ -66,7 +66,7 @@ h4 "errors method" do
     end
   end
 
-  it "Or, You can simply use record.error.error_messages to get translated error message with default translation system
+  it "Or, You can simply use +record.error.error_messages+ to get translated error message with default translation system
     record.errors.error_messages
     # => [\"Item.name was expected to be present, but it wasn't\"] 
   You can customize the default message set. See DataMapper::Should::Translation.translations.  

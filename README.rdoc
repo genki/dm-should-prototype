@@ -41,39 +41,39 @@
     
 
 ==== Available predicates
-- All available predicates are defined on DataMapper::Should::AvailablePredicates module
-- Available predicates means the methods could be used in property_with_spec block
+- All available predicates are defined on <tt>DataMapper::Should::AvailablePredicates</tt> module
+- Available predicates means the methods could be used in +property_with_spec+ block
 
 
 === DataMapper::Resource (Instance methods) with dm-should
 ==== valid? method
-- should return true if a record satisfy its specs and false if it doesn't
-- a record shouldn't be saved when valid? returns false
+- should return +true+ if a record satisfy its specs and +false+ if it doesn't
+- a record shouldn't be saved when valid? returns +false+
 
 ==== errors method
-- should return an instance of DataMapper::Should::Errors.
-- Once valid? method executed and return false, record.errors has details about it
-- You can generate an Array of error messages by passing a block to translation_keys_each method:
+- should return an instance of <tt>DataMapper::Should::Errors</tt>.
+- Once valid? method executed and return +false+, record.errors has details about it
+- You can generate error messages by passing a block to +translation_keys_each+ method:
     record.errors.translation_keys_each do |translation_key, assigns|
       your_translation_system.translate(translation_key, assigns)
     end
 
-  The arguments of the block is translation_key and assigns:
+  The arguments of the block is +translation_key+ and +assigns+:
   [<b>translation_key</b>]
     a translation_key is kind of 'warn.be_present' or 'warn.be_unique'.
     They are combinations of 'doctype.spectype'.
   [<b>assigns[:field]</b>]
-    is now a String like 'Modelname.fieldname'. this is also supposed to be translated 
+    is now a +String+ like 'Modelname.fieldname'. this is also supposed to be translated 
   [<b>assigns[:actual]</b>]
     is an actual value at the recently validated field 
   
-- Or, You can simply use record.error.error_messages to get translated error message with default translation system
+- Or, You can simply use +record.error.error_messages+ to get translated error message with default translation system
     record.errors.error_messages
     # => ["Item.name was expected to be present, but it wasn't"] 
   You can customize the default message set. See DataMapper::Should::Translation.translations.  
   
 
-Finished in 0.016483 seconds
+Finished in 0.015082 seconds
 
 10 examples, 0 failures
 

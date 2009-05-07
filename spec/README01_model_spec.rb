@@ -34,7 +34,7 @@ h3 "DataMapper::Model (Class methods) with dm-should" do
 end
 
 h4 "Available predicates" do
-  it "All available predicates are defined on DataMapper::Should::AvailablePredicates module" do
+  it "All available predicates are defined on <tt>DataMapper::Should::AvailablePredicates</tt> module" do
     klass = Class.new do
       include DS::AvailablePredicates
     end
@@ -46,7 +46,7 @@ h4 "Available predicates" do
   end
 
 
-  it "Available predicates means the methods could be used in property_with_spec block\n\n" do
+  it "Available predicates means the methods could be used in +property_with_spec+ block\n\n" do
     proc do
       class Predicate
         include DataMapper::Resource
