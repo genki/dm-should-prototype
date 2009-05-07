@@ -30,14 +30,44 @@ namespace :readme do
     mkdir "doc" unless File.directory? "doc"
   end
 
-  desc "generate readme.raw.txt"
-  task :raw => :docdir do
-    sh "spec spec/README* -fs > doc/readme.raw.txt"
+  desc "generate doc/tree.txt"
+  task :tree => :docdir do
+    sh "tree lib > doc/tree.txt"
+  end
+
+  desc "generate doc/readme.spec.txt" 
+  task :specdoc => :docdir do
+    sh "spec spec/README* -fs > doc/readme.spec.txt"
+  end
+
+  desc "generate doc/specdoc.html"
+  task :specrdoc => :specdoc do
+    sh "rdoc -1 --quiet doc/readme.spec.txt > doc/specdoc.html"
+  end
+
+  desc "generate doc/readme.raw.txt"
+  task :raw => [:tree, :specdoc] do
+    tree = File.readlines("doc/tree.txt").map {|line| "  #{line}" }.join("")
+    specdoc = File.read("doc/readme.spec.txt")
+    File.open("doc/readme.raw.txt", "w") do |f|
+      f << <<-DOC 
+= dm-should
+== Current Tree
+#{tree}
+== Current SpecDoc
+#{specdoc}
+      DOC
+    end
   end
 
   desc "generate doc/index.html"
   task :local => :raw do
-    sh "rdoc -1 doc/readme.raw.txt > doc/index.html"
+    sh "rdoc -1 --quiet doc/readme.raw.txt > doc/index.html"
+  end
+
+  desc "generate README" 
+  task :gen => :raw do
+    sh "cat doc/readme.raw.txt > README.rdoc"
   end
 
 end
