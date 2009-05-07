@@ -23,3 +23,21 @@ PROJECT_DESCRIPTION = PROJECT_SUMMARY = 'DataMapper plugin for propeties with sp
 [ ROOT, ROOT.parent ].each do |dir|
   Pathname.glob(dir.join('tasks/**/*.rb').to_s).each { |f| require f }
 end
+
+namespace :readme do
+  desc "mkdir doc"
+  task :docdir do
+    mkdir "doc" unless File.directory? "doc"
+  end
+
+  desc "generate readme.raw.txt"
+  task :raw => :docdir do
+    sh "spec spec/README* -fs > doc/readme.raw.txt"
+  end
+
+  desc "generate doc/index.html"
+  task :local => :raw do
+    sh "rdoc -1 doc/readme.raw.txt > doc/index.html"
+  end
+
+end
