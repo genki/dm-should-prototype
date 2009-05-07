@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require File.dirname(__FILE__) + '/rdoc_helper'
 
-describe "=== DataMapper::Resource (Instance methods) with dm-should" do
+h3 "02: DataMapper::Resource (Instance methods) with dm-should" do
   h4 "valid? method" do
     before(:each) {  @item = Item.new  }
     attr_reader :item

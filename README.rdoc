@@ -26,7 +26,7 @@
 
 == Current SpecDoc
 
-=== DataMapper::Model (Class methods) with dm-should
+=== 01: DataMapper::Model (Class methods) with dm-should
 ==== property_with_spec method
 - should be defined in order to define specs of models
 - should be used like below:
@@ -45,7 +45,7 @@
 - Available predicates means the methods could be used in +property_with_spec+ block
 
 
-=== DataMapper::Resource (Instance methods) with dm-should
+=== 02: DataMapper::Resource (Instance methods) with dm-should
 ==== valid? method
 - should return +true+ if a record satisfy its specs and +false+ if it doesn't
 - a record shouldn't be saved when valid? returns +false+
@@ -73,9 +73,9 @@
   You can customize the default message set. See DataMapper::Should::Translation.translations.  
   
 
-=== Spec Class of dm-should
-==== What is SpecClass? For example ..
-If you have an Item class like this:
+=== 03: Spec Class of dm-should
+==== What is SpecClass?
+For example, when you have an Item class like this:
   class Item
     include DataMapper::Resource
     property :id, Serial
@@ -86,14 +86,20 @@ If you have an Item class like this:
     end
   end
   
-- Item.specs.on(:name) is an array of SpecClass's.
+- <tt>Item.specs.on(:name)</tt> is an array of SpecClass's.
 
   Strictly speaking, they're <tt>DataMapper::Should::BePresent</tt>, 
   <tt>DataMapper::Should::BeUnique</tt> and <tt>DataMapper::Should::Match</tt>.
   
-- And record.errors.on(:name) is also an array of SpecClass's.
+- And <tt>record.errors.on(:name)</tt> is also an array of SpecClass's.
 
-Finished in 0.018738 seconds
+==== Each Spec Class is responsible for validation
+- They have <tt>satisfy?</tt> method to ensure themselves
 
-12 examples, 0 failures
+  <tt>satisfy?</tt> method is sended when <tt>record.valid?</tt> .   
+  
+
+Finished in 0.020073 seconds
+
+13 examples, 0 failures
 

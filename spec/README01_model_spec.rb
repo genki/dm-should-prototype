@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require File.dirname(__FILE__) + '/rdoc_helper'
 
-h3 "DataMapper::Model (Class methods) with dm-should" do
+h3 "01: DataMapper::Model (Class methods) with dm-should" do
 
   h4 "property_with_spec method" do
 
@@ -60,4 +60,3 @@ h4 "Available predicates" do
   end
 
 end
-

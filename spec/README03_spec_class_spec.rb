@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require File.dirname(__FILE__) + '/rdoc_helper'
 
-h3 "Spec Class of dm-should" do
+h3 "03: Spec Class of dm-should" do
 
-  h4 "What is SpecClass? For example ..
-If you have an Item class like this:
+  h4 "What is SpecClass?
+For example, when you have an Item class like this:
   class Item
     include DataMapper::Resource
     property :id, Serial
@@ -28,7 +28,7 @@ If you have an Item class like this:
   end
     end
    
-    it "Item.specs.on(:name) is an array of SpecClass's.
+    it "<tt>Item.specs.on(:name)</tt> is an array of SpecClass's.
 
   Strictly speaking, they're <tt>DataMapper::Should::BePresent</tt>, 
   <tt>DataMapper::Should::BeUnique</tt> and <tt>DataMapper::Should::Match</tt>.
@@ -44,7 +44,7 @@ If you have an Item class like this:
     end
 
 
-    it "And record.errors.on(:name) is also an array of SpecClass's." do
+    it "And <tt>record.errors.on(:name)</tt> is also an array of SpecClass's." do
       Item3.auto_migrate!
       record = Item3.new
       record.valid?.should be_false
@@ -55,9 +55,22 @@ If you have an Item class like this:
 
     end
 
-    
   end
 
+end
 
+h4 "Each Spec Class is responsible for validation" do
+  it "They have <tt>satisfy?</tt> method to ensure themselves
+
+  <tt>satisfy?</tt> method is sended when <tt>record.valid?</tt> .   
+  " do 
+    record = Item3.new
+    spec = Item3.specs.on(:name)[0]
+    spec.should be_a(DS::BePresent)
+    spec.satisfy?(record).should be_false
+    
+    record.name = "present"
+    spec.satisfy?(record).should be_true
+  end
 end
 
