@@ -26,9 +26,9 @@ module DataMapper::Should
       },
 
       :warn => {
-        :be_present => "expected for %{field} to be present, got %{actual}",
-        :be_unique  => "expected for %{field} to be unique, but it wasn't",
-        :be_positive_integer => "expected for %{field} to be positive integer, got %{actual}"
+        :be_present => "%{field} was expected to be present, but it wasn't",
+        :be_unique  => "%{field} was expected to be unique, but it wasn't",
+        :be_positive_integer => "%{field} was expected to be  positive integer, got %{actual}"
       }
 
     }.to_mash
