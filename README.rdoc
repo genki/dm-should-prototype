@@ -73,7 +73,27 @@
   You can customize the default message set. See DataMapper::Should::Translation.translations.  
   
 
-Finished in 0.015082 seconds
+=== Spec Class of dm-should
+==== What is SpecClass? For example ..
+If you have an Item class like this:
+  class Item
+    include DataMapper::Resource
+    property :id, Serial
+    property_with_spec :name, String do
+      should be_present
+      should be_unique
+      should match(/^A/)
+    end
+  end
+  
+- Item.specs.on(:name) is an array of SpecClass's.
 
-10 examples, 0 failures
+  Strictly speaking, they're <tt>DataMapper::Should::BePresent</tt>, 
+  <tt>DataMapper::Should::BeUnique</tt> and <tt>DataMapper::Should::Match</tt>.
+  
+- And record.errors.on(:name) is also an array of SpecClass's.
+
+Finished in 0.018738 seconds
+
+12 examples, 0 failures
 
