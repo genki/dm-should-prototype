@@ -65,4 +65,14 @@ h4 "errors method" do
       assigns[:field].should == "Item.name"
     end
   end
+
+  it "Or, You can simply use record.error.error_messages to get translated error message with default translation system
+    record.errors.error_messages
+    # => [\"Item.name was expected to be present, but it wasn't\"] 
+  You can customize the default message set. See DataMapper::Should::Translation.translations.  
+  " do
+   record.valid? 
+   record.errors.error_messages.should be_an(Array)
+   record.errors.error_messages.should include("Item.name was expected to be present, but it wasn't")
+  end
 end
