@@ -22,13 +22,15 @@ module DataMapper::Should
         :be_present => "%{field} should be present",
         :be_unique => "%{field} should be unique",
         :be_unique_within_scopes => "%{field} should be unique (scope: %{scopes})",
-        :be_positive_integer => "%{field} should be a positive number"
+        :be_positive_integer => "%{field} should be a positive number",
+        :match => "%{field} should match %{pattern}"
       },
 
       :warn => {
         :be_present => "%{field} was expected to be present, but it wasn't",
         :be_unique  => "%{field} was expected to be unique, but it wasn't",
-        :be_positive_integer => "%{field} was expected to be  positive integer, got %{actual}"
+        :be_positive_integer => "%{field} was expected to be positive integer, got %{actual}",
+        :match => "%{field} was expected to match %{field}, got %{actual}"
       }
 
     }.to_mash
