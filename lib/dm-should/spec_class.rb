@@ -5,11 +5,15 @@ module DataMapper::Should
     attr_reader :property
     include ::Extlib::Assertions
 
+    cattr_reader :subclasses 
+    @@subclasses = []
+
     def self.inherited(klass)
       klass.class_eval do
         # setup default name
         name self.to_s.sub("DataMapper::Should::", "").snake_case.to_sym 
       end
+      @@subclasses << klass
     end
 
     def self.name(new_value=nil)

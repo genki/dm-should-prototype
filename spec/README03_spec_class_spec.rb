@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/spec_helper'
 require File.dirname(__FILE__) + '/rdoc_helper'
 
-h3 "03: Spec Class of dm-should" do
+h3 "03: Specs Class and SpecClass of dm-should" do
 
-  h4 "What is SpecClass?
+  h4 "What is Specs?
 For example, when you have an Item class like this:
   class Item
     include DataMapper::Resource
@@ -26,49 +26,82 @@ For example, when you have an Item class like this:
       should match(/^A/)
     end
   end
+      Item3.auto_migrate!
     end
-   
-    it "<tt>Item.specs.on(:name).to_a</tt> is an array of SpecClass's.
 
-  Strictly speaking, they're <tt>DataMapper::Should::BePresent</tt>, 
-  <tt>DataMapper::Should::BeUnique</tt> and <tt>DataMapper::Should::Match</tt>,
+    before :each do
+      @record = Item3.new
+    end
+    attr_reader :record
+    
+    it "<tt>Item.specs</tt> is an instance of <tt>DataMapper::Should::ModelSpecs</tt>,
 
-  and <tt>Item.specs.on(:name)</tt> is a <tt>DataMapper::Should::PropertySpecs</tt>'s instance.
-  " do
-      Item3.specs.on(:name).each do |klass|
-        klass.should be_a(DS::SpecClass)
+  its class is a child class of <tt>DataMapper::Should::Specs</tt>.
+    " do
+      Item.specs.should be_an_instance_of(DS::ModelSpecs)
+      DS::ModelSpecs.superclass.should == DS::Specs
+    end
+
+    it "<tt>Item.specs.on(:name)</tt> is an instance of <tt>DataMapper::Should::PropertySpecs</tt>,
+
+  its class is a child class of <tt>DataMapper::Should::Specs</tt>.
+    " do
+      Item.specs.on(:name).should be_an_instance_of(DS::PropertySpecs)
+      DS::PropertySpecs.superclass.should == DS::Specs
+    end
+
+    it "<tt>record.errors</tt> is an instance of <tt>DataMapper::Should::Errors</tt>,
+
+  its class is a child class of <tt>DataMapper::Should::ModelSpecs</tt>.
+    " do
+      record.valid?
+      record.errors.should be_an_instance_of(DS::Errors)
+      DS::Errors.superclass.should == DS::ModelSpecs
+    end
+
+    it "<tt>record.errors.on(:name)</tt> is an instance of <tt>DataMapper::Should::ErrorsOnProperty</tt>,
+
+  its class is a child class of <tt>DataMapper::Should::PropertySpecs.</tt>
+    " do
+      record.valid?
+      record.errors.on(:name).should be_an_instance_of(DS::ErrorsOnProperty)
+      DS::ErrorsOnProperty.superclass.should == DS::PropertySpecs
+    end
+
+    it "These <tt>DataMapper::Should::Specs</tt>'s subclasses stores objects of SpecClass" do
+      Item.specs.each do |obj|
+        obj.should be_a(DataMapper::Should::SpecClass)
       end
 
+      Item.specs.on(:name).each do |obj|
+        obj.should be_a(DataMapper::Should::SpecClass)
+      end
+
+      record.valid?
+      record.errors.each do |obj|
+        obj.should be_a(DataMapper::Should::SpecClass)
+      end
+
+      record.errors.on(:name).each do |obj|
+        obj.should be_a(DataMapper::Should::SpecClass)
+      end
+    end
+
+    it "You can access one of SpecClass of a Specs instance by <tt>[]</tt> method" do 
       Item3.specs.on(:name)[0].should be_a(DS::BePresent)
       Item3.specs.on(:name)[1].should be_a(DS::BeUnique)
       Item3.specs.on(:name)[2].should be_a(DS::Match)
-
-      Item.specs.on(:name).should be_an_instance_of(DS::PropertySpecs)
-
-    end
-
-
-    it "And <tt>record.errors.on(:name).to_a</tt> is also an array of SpecClass's.
-    
-  <tt>record.errors.on(:name)</tt> is a <tt>DataMapper::Should::ErrorsOnProperty</tt>'s instance.
-    " do
-      Item3.auto_migrate!
-      record = Item3.new
-      record.valid?.should be_false
-
-      record.errors.on(:name).each do |klass|
-        klass.should be_a(DS::SpecClass)
-      end
-
-      record.errors.on(:name).should be_an_instance_of(DS::ErrorsOnProperty)
-
     end
 
   end
-
 end
 
-h4 "Each Spec Class is responsible for validation" do
+h4 "What is SpecClass?
+
+[There are #{DS::SpecClass.subclasses.size} subclasses now.]
+#{DS::SpecClass.subclasses.map{|k| "  <tt>#{k.to_s}</tt>" }.join(",\n")}
+
+" do
   it "They have <tt>satisfy?</tt> method to ensure themselves
 
   <tt>satisfy?</tt> method is sended when <tt>record.valid?</tt> .   

@@ -73,8 +73,8 @@
   You can customize the default message set. See <tt>DataMapper::Should::Translation.translations</tt>.  
   
 
-=== 03: Spec Class of dm-should
-==== What is SpecClass?
+=== 03: Specs Class and SpecClass of dm-should
+==== What is Specs?
 For example, when you have an Item class like this:
   class Item
     include DataMapper::Resource
@@ -86,25 +86,40 @@ For example, when you have an Item class like this:
     end
   end
   
-- <tt>Item.specs.on(:name).to_a</tt> is an array of SpecClass's.
+- <tt>Item.specs</tt> is an instance of <tt>DataMapper::Should::ModelSpecs</tt>,
 
-  Strictly speaking, they're <tt>DataMapper::Should::BePresent</tt>, 
-  <tt>DataMapper::Should::BeUnique</tt> and <tt>DataMapper::Should::Match</tt>,
-
-  and <tt>Item.specs.on(:name)</tt> is a <tt>DataMapper::Should::PropertySpecs</tt>'s instance.
-  
-- And <tt>record.errors.on(:name).to_a</tt> is also an array of SpecClass's.
+  its class is a child class of <tt>DataMapper::Should::Specs</tt>.
     
-  <tt>record.errors.on(:name)</tt> is a <tt>DataMapper::Should::ErrorsOnProperty</tt>'s instance.
-    
+- <tt>Item.specs.on(:name)</tt> is an instance of <tt>DataMapper::Should::PropertySpecs</tt>,
 
-==== Each Spec Class is responsible for validation
+  its class is a child class of <tt>DataMapper::Should::Specs</tt>.
+    
+- <tt>record.errors</tt> is an instance of <tt>DataMapper::Should::Errors</tt>,
+
+  its class is a child class of <tt>DataMapper::Should::ModelSpecs</tt>.
+    
+- <tt>record.errors.on(:name)</tt> is an instance of <tt>DataMapper::Should::ErrorsOnProperty</tt>,
+
+  its class is a child class of <tt>DataMapper::Should::PropertySpecs.</tt>
+    
+- These <tt>DataMapper::Should::Specs</tt>'s subclasses stores objects of SpecClass
+- You can access one of SpecClass of a Specs instance by <tt>[]</tt> method
+
+==== What is SpecClass?
+
+[There are 5 subclasses now.]
+  <tt>DataMapper::Should::BePresent</tt>,
+  <tt>DataMapper::Should::BeInteger</tt>,
+  <tt>DataMapper::Should::BePositiveInteger</tt>,
+  <tt>DataMapper::Should::BeUnique</tt>,
+  <tt>DataMapper::Should::Match</tt>
+
 - They have <tt>satisfy?</tt> method to ensure themselves
 
   <tt>satisfy?</tt> method is sended when <tt>record.valid?</tt> .   
   
 
-Finished in 0.019216 seconds
+Finished in 0.021336 seconds
 
-13 examples, 0 failures
+17 examples, 0 failures
 
