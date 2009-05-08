@@ -66,10 +66,10 @@ h4 "errors method" do
     end
   end
 
-  it "Or, You can simply use +record.error.error_messages+ to get translated error message with default translation system
+  it "Or, You can simply use <tt>record.error.error_messages</tt> to get translated error message with default translation system
     record.errors.error_messages
     # => [\"Item.name was expected to be present, but it wasn't\"] 
-  You can customize the default message set. See DataMapper::Should::Translation.translations.  
+  You can customize the default message set. See <tt>DataMapper::Should::Translation.translations</tt>.  
   " do
    record.valid? 
    record.errors.error_messages.should be_an(Array)

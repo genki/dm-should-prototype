@@ -67,7 +67,7 @@
   [<b>assigns[:actual]</b>]
     is an actual value at the recently validated field 
   
-- Or, You can simply use +record.error.error_messages+ to get translated error message with default translation system
+- Or, You can simply use <tt>record.error.error_messages</tt> to get translated error message with default translation system
     record.errors.error_messages
     # => ["Item.name was expected to be present, but it wasn't"] 
   You can customize the default message set. See DataMapper::Should::Translation.translations.  
@@ -99,7 +99,7 @@ For example, when you have an Item class like this:
   <tt>satisfy?</tt> method is sended when <tt>record.valid?</tt> .   
   
 
-Finished in 0.020073 seconds
+Finished in 0.019124 seconds
 
 13 examples, 0 failures
 
