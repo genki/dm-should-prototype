@@ -70,7 +70,7 @@
 - Or, You can simply use <tt>record.error.error_messages</tt> to get translated error message with default translation system
     record.errors.error_messages
     # => ["Item.name was expected to be present, but it wasn't"] 
-  You can customize the default message set. See DataMapper::Should::Translation.translations.  
+  You can customize the default message set. See <tt>DataMapper::Should::Translation.translations</tt>.  
   
 
 === 03: Spec Class of dm-should
@@ -86,12 +86,17 @@ For example, when you have an Item class like this:
     end
   end
   
-- <tt>Item.specs.on(:name)</tt> is an array of SpecClass's.
+- <tt>Item.specs.on(:name).to_a</tt> is an array of SpecClass's.
 
   Strictly speaking, they're <tt>DataMapper::Should::BePresent</tt>, 
-  <tt>DataMapper::Should::BeUnique</tt> and <tt>DataMapper::Should::Match</tt>.
+  <tt>DataMapper::Should::BeUnique</tt> and <tt>DataMapper::Should::Match</tt>,
+
+  and <tt>Item.specs.on(:name)</tt> is a <tt>DataMapper::Should::PropertySpecs</tt>'s instance.
   
-- And <tt>record.errors.on(:name)</tt> is also an array of SpecClass's.
+- And <tt>record.errors.on(:name).to_a</tt> is also an array of SpecClass's.
+    
+  <tt>record.errors.on(:name)</tt> is a <tt>DataMapper::Should::ErrorsOnProperty</tt>'s instance.
+    
 
 ==== Each Spec Class is responsible for validation
 - They have <tt>satisfy?</tt> method to ensure themselves
@@ -99,7 +104,7 @@ For example, when you have an Item class like this:
   <tt>satisfy?</tt> method is sended when <tt>record.valid?</tt> .   
   
 
-Finished in 0.019124 seconds
+Finished in 0.019216 seconds
 
 13 examples, 0 failures
 
