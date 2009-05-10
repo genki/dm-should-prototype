@@ -1,3 +1,4 @@
 doc/*
 *.rid
 .DS_Store
+pkg/*
