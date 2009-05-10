@@ -119,7 +119,29 @@ For example, when you have an Item class like this:
   <tt>satisfy?</tt> method is sended when <tt>record.valid?</tt> .   
   
 
-Finished in 0.021336 seconds
+=== 04: Details, especially about each SpecClass's
+- TODO: I'll put some infomation here
 
-17 examples, 0 failures
+==== be_present
+  property_with_spec :number, Fixnum do
+    should be_present
+  end
+
+when a [String] record.name should be present, record.valid? returns..
+- false if record.name is nil
+- false if record.name is empty string
+- false if record.name only contains invisible string
+- false if record.name only contains invisible string ( including 2 byte space )
+- true  if record.name is string that is not empty string.
+
+when a [Integer] record.number should be present, record.valid? returns..
+- false if record.number is nil
+- false if record.number is empty string
+- true  if record.number is numeric string
+- true  if record.number is a Fixnum
+- true  if record.number is an Array
+
+Finished in 0.023154 seconds
+
+28 examples, 0 failures
 
